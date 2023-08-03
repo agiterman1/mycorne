@@ -1,0 +1,7 @@
+qmk flash -kb mycorne/ari -km default
+qmk compile -kb mycorne/ari -km default
+
+cat /proc/bus/input/devices
+sudo evtest /dev/input/event5
+
+
