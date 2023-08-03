@@ -161,6 +161,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 uint8_t mod_state;
 uint16_t key_timer; // declare key_timer for use in macro
 
+// return false; // Skip all further processing of this key
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // If console is enabled, it will print the matrix position and status of each key pressed
 #ifdef CONSOLE_ENABLE
@@ -233,14 +234,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     // Reapplying modifier state so that the held shift key(s)
                     // still work even after having tapped the Backspace/Delete key.
                     set_mods(mod_state);
-                    return false;
+                    return false; // Skip all further processing of this keyz
                 }
             } else { // on release of KC_BSPC
                 // In case KC_DEL is still being sent even after the release of KC_BSPC
                 if (delkey_registered) {
                     unregister_code(KC_DEL);
                     delkey_registered = false;
-                    return false;
+                    return false; // Skip all further processing of this keyz
                 }
             }
             // Let QMK process the KC_BSPC keycode as usual outside of shift
