@@ -174,7 +174,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     );
     //
     // Store the current modifier state in the variable for later reference
-    // static bool delkey_registered;
+    static bool delkey_registered;
     mod_state = get_mods();
     switch (keycode) {
 
@@ -208,16 +208,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             // rgblight_setrgb(RGB_BLUE);
             break;
-/*
+
         case GUI_BSP:
                 // of the delete key status: registered or not?
             if (record->event.pressed) {
                 // Detect the activation of either shift keys
 // #ifdef CONSOLE_ENABLE
-//     uprintf("mod_state: 0x%04X, MOD_MASK_SHIFT: 0x%04X\n", mod_state, MOD_MASK_SHIFT);
+     uprintf("mod_state: 0x%04X, MOD_MASK_SHIFT: 0x%04X\n", mod_state, MOD_MASK_SHIFT);
 // #endif
                 if (mod_state & MOD_MASK_SHIFT) {
-                    light_led( COLOR_LEADER );
+                    // uprintf("shif hold\n");
+                    // light_led( COLOR_LEADER );
                     // First temporarily canceling both shifts so that
                     // shift isn't applied to the KC_DEL keycode
                     del_mods(MOD_MASK_SHIFT);
@@ -232,6 +233,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else { // on release of KC_BSPC
                 // In case KC_DEL is still being sent even after the release of KC_BSPC
                 if (delkey_registered) {
+                    // uprintf("release delkey\n");
                     unregister_code(KC_DEL);
                     delkey_registered = false;
                     return false; // Skip all further processing of this keyz
@@ -239,7 +241,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             // Let QMK process the KC_BSPC keycode as usual outside of shift
             return true;
-*/
+
     }
 
     return true;
@@ -253,13 +255,13 @@ void ps2_mouse_moved_user(report_mouse_t *mouse_report) {
 }
 
 
-const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+// const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
 
-// This globally defines all key overrides to be used
-const key_override_t **key_overrides = (const key_override_t *[]){
-	&delete_key_override,
-	NULL // Null terminate the array of overrides!
-};
+// // This globally defines all key overrides to be used
+// const key_override_t **key_overrides = (const key_override_t *[]){
+// 	&delete_key_override,
+// 	NULL // Null terminate the array of overrides!
+// };
 
 
 // const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
