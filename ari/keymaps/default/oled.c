@@ -1,7 +1,5 @@
 #include QMK_KEYBOARD_H
 
-#include "quantum.h"
-#include "raw_hid.h"
 #include "transactions.h"
 
 #include "print.h"
@@ -15,6 +13,14 @@ bool oled_task_user(void) {
     if (!is_keyboard_master()) {
         return false;
     }
+
+
+    oled_set_cursor( 0, 0);
+    oled_write_char((const char)0, false);
+    oled_set_cursor( 1, 0);
+    oled_write_char((const char)1, false);
+    return false;
+
 
     if ( is_in_leader ) return false;
 
