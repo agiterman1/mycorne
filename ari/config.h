@@ -13,19 +13,6 @@
 #define SERIAL_USART_TX_PIN GP0  // USART TX pin
 #define SERIAL_USART_RX_PIN GP1  // USART RX pin
 
-// #define BOOTMAGIC_LITE_ROW_LEFT 0
-// #define BOOTMAGIC_LITE_COLUMN_LEFT 0
-
-/* RGB Stuff */
-#ifdef RGB_MATRIX_ENABLE
-
-#    define RGB_MATRIX_LED_COUNT 74
-#    define RGB_MATRIX_SPLIT \
-        { 37, 37 } // 37 LEDs on each side
-
-#endif
-
-
 #define HAL_USE_I2C TRUE
 #define I2C_DRIVER I2CD1
 #define I2C1_SDA_PIN GP14
@@ -87,11 +74,6 @@
 // enabled, the dual-role key will perform its hold action instead.
 // #define HOLD_ON_OTHER_KEY_PRESS
 
-// markstos: not sure if these are correct
-// They are intended to beep and flash during flashing
-// #define QMK_LED     D5
-// #define QMK_SPEAKER C6
-
 // When enabled, typing a mod-tap plus second within term will register as the mod-combo
 // Ref: https://beta.docs.qmk.fm/using-qmk/software-features/tap_hold#permissive-hold
 // #define PERMISSIVE_HOLD
@@ -149,4 +131,7 @@
   #undef MOUSEKEY_DELAY
   #define MOUSEKEY_DELAY 5
 #endif
+
+
+#define RETRO_TAPPING
 

@@ -174,7 +174,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     );
     //
     // Store the current modifier state in the variable for later reference
-    static bool delkey_registered;
+    // static bool delkey_registered;
     mod_state = get_mods();
     switch (keycode) {
 
@@ -208,15 +208,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             // rgblight_setrgb(RGB_BLUE);
             break;
+/*
         case GUI_BSP:
-            // if (record->event.pressed) {
-
-            //     key_timer = timer_read();
-            // } else { // Initialize a boolean variable that keeps track
-                // if (timer_elapsed(key_timer) < TAPPING_TERM && !(mod_state & MOD_MASK_SHIFT) )
-                //     return true;
-                    // tap_code16(UK_LPRN);
-
                 // of the delete key status: registered or not?
             if (record->event.pressed) {
                 // Detect the activation of either shift keys
@@ -246,7 +239,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             // Let QMK process the KC_BSPC keycode as usual outside of shift
             return true;
-        // }
+*/
     }
 
     return true;
@@ -260,7 +253,13 @@ void ps2_mouse_moved_user(report_mouse_t *mouse_report) {
 }
 
 
+const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
 
+// This globally defines all key overrides to be used
+const key_override_t **key_overrides = (const key_override_t *[]){
+	&delete_key_override,
+	NULL // Null terminate the array of overrides!
+};
 
 
 // const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
@@ -277,7 +276,14 @@ void ps2_mouse_moved_user(report_mouse_t *mouse_report) {
 
 
 
-
+/*
+ * void oneshot_locked_mods_changed_user(uint8_t mods) {
+    if (mods & MOD_MASK_SHIFT) {
+        del_mods(MOD_MASK_SHIFT);
+        set_oneshot_locked_mods(~MOD_MASK_SHIFT & get_oneshot_locked_mods());   // this will remove the lock!
+        caps_word_on();
+    }
+}*/
 
 
 /*
