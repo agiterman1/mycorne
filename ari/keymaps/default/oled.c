@@ -89,6 +89,7 @@ void oneshot_locked_mods_changed_user(uint8_t mods) {
     println("Oneshot locked mods off");
   }
 }
+/*
 void draw_static(uint8_t x, uint8_t y, uint8_t width, uint8_t heigth, int color, uint8_t density) {
     unsigned long rx        = fastrand_long();
     unsigned long ry        = fastrand_long();
@@ -117,4 +118,6 @@ void draw_static(uint8_t x, uint8_t y, uint8_t width, uint8_t heigth, int color,
         }
     }
 }
+
+*/
 

@@ -39,11 +39,11 @@ combo_t key_combos[] = {
 #define OSL_FUN  OSL(_FUNC)
 #define GUI_ENT  GUI_T(KC_ENT)
 #define SYM_LDR  LT(_SYM, KC_NO)
-#define RSE_BSP  LT(_NAV, KC_BSPC)
+#define NAV_BSP  LT(_NAV, KC_BSPC)
 #define OSM_SFT  OSM(MOD_LSFT)
 
 #define GUI_BSP  GUI_T(KC_BSPC)
-#define RSE_ENT  LT(_NAV, KC_ENT)
+#define NAV_ENT  LT(_NAV, KC_ENT)
 
 // For _NAV layer
 #define CTL_ESC  LCTL_T(KC_ESC)
@@ -61,8 +61,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
        OSM_SFT,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                         OSM_ALT, GUI_BSP, SYM_LDR,   RSE_ENT ,KC_SPC  ,OSM_SFT
-                                         // OSM_LCTL, GUI_ENT, LOW_TAB,   RSE_BSP ,KC_SPC  ,OSM_SFT
+                                         OSM_ALT, GUI_BSP, SYM_LDR,     NAV_ENT,KC_SPC  ,OSM_SFT
+                                         // OSM_LCTL, GUI_ENT, LOW_TAB,   NAV_BSP ,KC_SPC  ,OSM_SFT
                                       //`--------------------------'  `--------------------------'
   ),
 
