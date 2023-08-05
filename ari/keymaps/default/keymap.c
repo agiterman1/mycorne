@@ -195,7 +195,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         //   break;
 
 
-        // case KC_BSPC:
         case OSM_SFT:
             if (record->event.pressed) {
                 println("in shift hold");

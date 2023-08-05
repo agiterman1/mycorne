@@ -17,8 +17,8 @@ const uint8_t maxY = 18;
 
 // const uint8_t MODLENGTH = 10;
 int8_t modIndex = -1;
-char arr[MODLENGTH];
-char last_arr[MODLENGTH];
+char arr[MODLENGTH] = {0};
+char last_arr[MODLENGTH] = {1};
 
 extern bool is_in_leader;
 
@@ -34,13 +34,15 @@ static void render_letter(const char c, uint8_t y) {
 
 void draw_mods(void) {
     // compare arrays
+    printf("draw_mods, modIndex: %d\n", modIndex);
     if (modIndex == -1) return;
 
     if (modIndex == 0) {
         oled_clear();
-        modIndex--;
+        last_arr[ modIndex-- ] = 0;
         return;
     }
+    printf("draw_mods, test buffers\n");
 
     uint8_t i;
     for (i = 0; i < modIndex; i++) {
@@ -48,7 +50,7 @@ void draw_mods(void) {
             break;
         }
     }
-    printf("%d, %d\n", i, modIndex);
+    printf("draw_mods, %d, %d\n", i, modIndex);
     if (i == modIndex) return;
 
     oled_clear();
@@ -166,6 +168,7 @@ bool oled_task_user(void) {
 
 // add c to buffer (only if not there)
 void handle_locked_mod(char c) {
+    printf("handle_locked_mod, modIndex: %d\n", modIndex);
     if (modIndex == -1) modIndex = 0;
 
     if ( modIndex + 1 == MODLENGTH ) return;
@@ -174,8 +177,8 @@ void handle_locked_mod(char c) {
         if (arr[i] == c) return;
     }
 
-    arr[modIndex] = c;
-    modIndex++;
+    printf("handle_locked_mod, Add: %d\n", c);
+    arr[modIndex++] = c;
 }
 
 // remove c from buffer (only if it is there)
@@ -195,6 +198,7 @@ void handle_unlocked_mod(char c) {
 bool is_shift_locked = false;
 bool is_alt_locked = false;
 void oneshot_locked_mods_changed_user(uint8_t mods) {
+
   if (mods & MOD_MASK_SHIFT) {
     is_shift_locked = true;
     println("Oneshot locked mods SHIFT");
