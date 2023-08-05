@@ -80,13 +80,23 @@ bool oled_task_user(void) {
             // oled_write_P(PSTR("Def\n"), false);
             light_led( COLOR_QWERTY );
             break;
+<<<<<<< HEAD
         case _NAV:
-            // oled_write_P(PSTR("NAV\n"), false);
+            oled_write_P(PSTR("NAV\n"), false);
             light_led( COLOR_NAV );
             break;
         case _SYM:
-            // oled_write_P(PSTR("SYM\n"), false);
+            oled_write_P(PSTR("SYMB\n"), false);
             light_led( COLOR_SYM );
+=======
+        case _RAISE:
+            // oled_write_P(PSTR("RAISE\n"), false);
+            light_led( COLOR_RAISE );
+            break;
+        case _LOWER:
+            // oled_write_P(PSTR("LOWER\n"), false);
+            light_led( COLOR_LOWER );
+>>>>>>> 01155f20ad2077cf90fb8d735617d26078511d6a
             break;
         default:
             // Or use the write_ln shortcut over adding '\n' to the end of your string
@@ -205,6 +215,8 @@ void oneshot_locked_mods_changed_user(uint8_t mods) {
   if (!mods) {
     println("Oneshot locked mods off");
   }
+
+  draw_mods();
 }
 /*
 void draw_static(uint8_t x, uint8_t y, uint8_t width, uint8_t heigth, int color, uint8_t density) {

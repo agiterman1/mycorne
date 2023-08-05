@@ -1,5 +1,5 @@
-#include QMK_KEYBOARD_H
 #include "keycodes.h"
+#include QMK_KEYBOARD_H
 #include "quantum.h"
 #include "raw_hid.h"
 #include "transactions.h"
@@ -9,8 +9,12 @@
 #include "keymap.h"
 #include "color.h"
 #include "swapper.h"
+<<<<<<< HEAD
+#include "keymap.h"
+=======
 #include "oled.h"
 
+>>>>>>> 01155f20ad2077cf90fb8d735617d26078511d6a
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
@@ -63,7 +67,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        OSM_SFT,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                          OSM_ALT, GUI_BSP, SYM_LDR,     NAV_ENT,KC_SPC  ,OSM_SFT
-                                         // OSM_LCTL, GUI_ENT, SYM_TAB,   NAV_BSP ,KC_SPC  ,OSM_SFT
+                                         // OSM_LCTL, GUI_ENT, LOW_TAB,   NAV_BSP ,KC_SPC  ,OSM_SFT
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -196,6 +200,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 
         // case KC_BSPC:
+<<<<<<< HEAD
+        case SYM_LDR:
+=======
         case OSM_SFT:
             if (record->event.pressed) {
                 println("in shift hold");
@@ -209,13 +216,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             draw_mods();
             break;
-        case SYM_LDR:
+        case LOW_LDR:
+>>>>>>> 01155f20ad2077cf90fb8d735617d26078511d6a
             if (record->event.pressed) {
                  key_timer = timer_read();
-            } else {
-                if (timer_elapsed(key_timer) < TAPPING_TERM ) {
-                    if ( !is_in_leader )
-                        leader_start();
+            } else { if (timer_elapsed(key_timer) < TAPPING_TERM ) { if ( !is_in_leader ) leader_start();
                     else
                         leader_end();
                     return true;
