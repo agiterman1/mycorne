@@ -199,16 +199,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case OSM_SFT:
             if (record->event.pressed) {
                 println("in shift hold");
-                handle_locked_mod((char) 137);
+                handle_locked_mod(LETTER_S);
             } else {
                 println("in shift release");
                 // might be locked.
                 if (record->tap.count < 2) {
-                    handle_unlocked_mod((char) 137);
+                    handle_unlocked_mod(LETTER_S);
                 }
             }
+
             draw_mods();
             break;
+
         case SYM_LDR:
             if (record->event.pressed) {
                  key_timer = timer_read();

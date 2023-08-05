@@ -7,15 +7,18 @@
 
 #include "print.h"
 
-
+#include "oled.h"
 #include "keymap.h"
+
 #define MODLENGTH 10
+
 
 const uint8_t maxY = 18;
 
-// const uint8_t modLength = 10;
-uint8_t modIndex = 0;
-char arr[modLength];
+// const uint8_t MODLENGTH = 10;
+int8_t modIndex = -1;
+char arr[MODLENGTH];
+char last_arr[MODLENGTH];
 
 extern bool is_in_leader;
 
@@ -30,10 +33,32 @@ static void render_letter(const char c, uint8_t y) {
 }
 
 void draw_mods(void) {
-    oled_clear();
+    // compare arrays
+    if (modIndex == -1) return;
 
+    if (modIndex == 0) {
+        oled_clear();
+        modIndex--;
+        return;
+    }
+
+    uint8_t i;
+    for (i = 0; i < modIndex; i++) {
+        if (arr[i] != last_arr[i]) {
+            break;
+        }
+    }
+    printf("%d, %d\n", i, modIndex);
+    if (i == modIndex) return;
+
+    oled_clear();
     for (uint8_t i = 0; i < modIndex; i++) {
         render_letter((const char) arr[i], maxY - i * 3);
+    }
+
+    // copy arr to last_arr
+    for (uint8_t i = 0; i < modIndex; i++) {
+        last_arr[i] = arr[i];
     }
 }
 
@@ -141,6 +166,8 @@ bool oled_task_user(void) {
 
 // add c to buffer (only if not there)
 void handle_locked_mod(char c) {
+    if (modIndex == -1) modIndex = 0;
+
     if ( modIndex + 1 == MODLENGTH ) return;
 
     for (uint8_t i = 0; i < modIndex; i++) {
@@ -155,29 +182,28 @@ void handle_locked_mod(char c) {
 void handle_unlocked_mod(char c) {
         for (uint8_t i = 0; i < modIndex; i++) {
             if (arr[i] == c) {
-                char temp=arr[i];
-                    for(uint8_t j=i;j<modIndex-1;j++)
+                // shift elements to the left
+                for(uint8_t j=i;j<modIndex;j++)
                     arr[j]=arr[j+1];
-                }
 
-                arr[modIndex-1]=temp;
-                i--;
-                modIndex--;
+                modIndex--; // the number of mods is down by 1
+                return;
             }
         }
 }
 
 bool is_shift_locked = false;
+bool is_alt_locked = false;
 void oneshot_locked_mods_changed_user(uint8_t mods) {
   if (mods & MOD_MASK_SHIFT) {
     is_shift_locked = true;
     println("Oneshot locked mods SHIFT");
-    handle_locked_mod((char) 137);
+    handle_locked_mod(LETTER_S);
   } else {
         if (is_shift_locked) {
             is_shift_locked = false;
             println("Oneshot locked mods SHIFT OFF");
-            handle_unlocked_mod(137);
+            handle_unlocked_mod(LETTER_S);
         }
 
     }
@@ -189,12 +215,17 @@ void oneshot_locked_mods_changed_user(uint8_t mods) {
     handle_unlocked_mod((char) 134);
   }
   if (mods & MOD_MASK_ALT) {
+    is_alt_locked = true;
     println("Oneshot locked mods ALT");
-    handle_locked_mod((char) 128);
+    handle_locked_mod(LETTER_A);
   } else {
-    println("Oneshot locked mods ALT OFF");
-    handle_unlocked_mod((char) 128);
-  }
+        if (is_alt_locked) {
+            is_alt_locked = false;
+            println("Oneshot locked mods ALT OFF");
+            handle_unlocked_mod(LETTER_A);
+        }
+
+    }
   if (mods & MOD_MASK_GUI) {
     println("Oneshot locked mods GUI");
     handle_locked_mod((char) 140);
@@ -205,6 +236,8 @@ void oneshot_locked_mods_changed_user(uint8_t mods) {
   if (!mods) {
     println("Oneshot locked mods off");
   }
+
+  draw_mods();
 }
 /*
 void draw_static(uint8_t x, uint8_t y, uint8_t width, uint8_t heigth, int color, uint8_t density) {
