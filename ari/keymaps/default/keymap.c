@@ -16,7 +16,7 @@ enum custom_keycodes {
   QWERTY = SAFE_RANGE,
   SYM,
   NAV,
-  SW_WIN,  // Switch to next window         (cmd-tab)
+  ALT_TAB,  // Switch to next window         (cmd-tab)
 };
 
 enum combos {
@@ -56,7 +56,7 @@ combo_t key_combos[] = {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,XXXXXXX ,
+        KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,ALT_TAB ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
        CTL_ESC,   KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,KC_QUOT ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -162,6 +162,9 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 
 // uint8_t mod_state;
 uint16_t key_timer; // declare key_timer for use in macro
+bool is_alt_tab_active = false; // ADD this near the beginning of keymap.c
+uint16_t alt_tab_timer = 0;     // we will be using them soon.
+
 
 // return false; // Skip all further processing of this key
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -207,6 +210,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         //     draw_mods();
         //     break;
+        case ALT_TAB:
+              if (record->event.pressed) {
+                if (!is_alt_tab_active) {
+                  is_alt_tab_active = true;
+                  register_code(KC_LALT);
+                }
+                alt_tab_timer = timer_read();
+                register_code(KC_TAB);
+              } else {
+                unregister_code(KC_TAB);
+              }
+              break;
 
         case SYM_LDR:
             if (record->event.pressed) {
@@ -260,6 +275,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     return true;
 
+}
+
+void matrix_scan_user(void) { // The very important timer.
+  if (is_alt_tab_active) {
+    if (timer_elapsed(alt_tab_timer) > 1000) {
+      unregister_code(KC_LALT);
+      is_alt_tab_active = false;
+    }
+  }
 }
 
 void ps2_mouse_moved_user(report_mouse_t *mouse_report) {
