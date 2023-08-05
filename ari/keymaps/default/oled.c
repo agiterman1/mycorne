@@ -89,3 +89,32 @@ void oneshot_locked_mods_changed_user(uint8_t mods) {
     println("Oneshot locked mods off");
   }
 }
+void draw_static(uint8_t x, uint8_t y, uint8_t width, uint8_t heigth, int color, uint8_t density) {
+    unsigned long rx        = fastrand_long();
+    unsigned long ry        = fastrand_long();
+    unsigned long maskx     = 1;
+    unsigned long masky     = 1;
+    unsigned long mask_base = 1;
+
+    // more 1 in the octet
+    for (int r = 0; r < density; r++) {
+        rx &= fastrand_long();
+        ry &= fastrand_long();
+    }
+
+    color = ((rx >> 1) % 2) == 0;
+
+    for (uint8_t i = 0; i < width; i++) {
+        for (uint8_t j = 0; j < heigth; j++) {
+            // new mask based on ij loop
+            maskx = (mask_base << i);
+            masky = (mask_base << j);
+
+            // logic AND with the masks
+            if (((rx & maskx) == maskx) && ((ry & masky) == masky)) {
+                oled_write_pixel(x + i, y + j, color);
+            }
+        }
+    }
+}
+
