@@ -4,4 +4,6 @@ qmk compile -kb mycorne/ari -km default
 cat /proc/bus/input/devices
 sudo evtest /dev/input/event5
 
+ qmk c2json -km default -kb mycorne/ari ~/qmk_firmware/keyboards/mycorne/ari/keymaps/default/keymap.c --no-cpp
+
 

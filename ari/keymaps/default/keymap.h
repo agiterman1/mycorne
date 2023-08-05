@@ -6,8 +6,8 @@
 // entirely and just use numbers.
 enum custom_layers {
   _QWERTY,
-  _LOWER,
-  _RAISE,
+  _SYM,
+  _NAV,
   _FUNC,
 };
 
