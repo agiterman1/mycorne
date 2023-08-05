@@ -22,13 +22,13 @@ char last_arr[MODLENGTH] = {1};
 
 extern bool is_in_leader;
 
-static void render_letter(const char c, uint8_t y) {
+static void render_letter(const char c, uint8_t y, bool invert) {
     for (size_t i = 0; i < 3; i++) {
         oled_set_cursor(y+i, 2);
-        oled_write_char((const char) c+i, false);
+        oled_write_char((const char) c+i, invert);
 
         oled_set_cursor(y+i, 3);
-        oled_write_char((const char) c+i+32, false);
+        oled_write_char((const char) c+i+32, invert);
     }
 }
 
@@ -58,8 +58,17 @@ void draw_mods(void) {
 
     // draw vertical
     oled_clear();
+    bool invert;
+    uint8_t locked_mods;
     for (uint8_t i = 0; i < modIndex; i++) {
-        render_letter((const char) arr[i], maxY - i * 3);
+
+        invert = false;
+        locked_mods = get_oneshot_locked_mods();
+
+        if ( ~MOD_MASK_SHIFT & locked_mods || ~MOD_MASK_ALT & locked_mods || ~MOD_MASK_CTRL & locked_mods || ~MOD_MASK_GUI &locked_mods )
+            invert = true;
+
+        render_letter((const char) arr[i], maxY - i * 3, invert);
     }
 
     // copy arr to last_arr
