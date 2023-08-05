@@ -85,7 +85,7 @@
 
 // These mostly affect my one-shot Shift key, providing a CapsLock alternative.
 // I want a relatively low timeout, so if I accidentally type "Shift", I can pause just briefly and move on.
-#define ONESHOT_TAP_TOGGLE 2  /* Tapping this number of times holds the key until tapped once again. */
+#define ONESHOT_TAP_TOGGLE 3  /* Tapping this number of times holds the key until tapped once again. */
 #define ONESHOT_TIMEOUT 2000  /* Time (in ms) before the one shot key is released */
 
 
@@ -134,5 +134,17 @@
 #endif
 
 
+// had problem with it. (nav/enter key)
 // #define RETRO_TAPPING
 
+// #define MOUSEKEY_INTERVAL 12
+// #define MOUSEKEY_MAX_SPEED 6
+// #define MOUSEKEY_TIME_TO_MAX 50
+
+// #define MOUSEKEY_DELAY 20
+// // It makes sense to use the same delay for the mouseweel
+// #define MOUSEKEY_WHEEL_DELAY 100
+// // The default is 100
+// #define MOUSEKEY_WHEEL_INTERVAL 50
+// // The default is 40
+// #define MOUSEKEY_WHEEL_TIME_TO_MAX 100

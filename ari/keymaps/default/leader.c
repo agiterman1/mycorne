@@ -1,20 +1,15 @@
-
 #include QMK_KEYBOARD_H
 #include "leader.h"
 #include "raw_hid.h"
-#include "transactions.h"
 
 #include "print.h"
-
-#include "color.h"
 
 extern bool is_in_leader;
 
 void leader_start_user(void) {
     is_in_leader = true;
-    oled_set_cursor(0,0);
-    oled_write_P(PSTR("LEAD\n"), false);
-    light_led( COLOR_LEADER );
+    // oled_set_cursor(0,0);
+    // oled_write_P(PSTR("LEAD\n"), false);
 }
 
 void tmux_prefix(void) {

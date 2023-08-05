@@ -160,15 +160,11 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 
 
 
-uint8_t mod_state;
+// uint8_t mod_state;
 uint16_t key_timer; // declare key_timer for use in macro
 
 // return false; // Skip all further processing of this key
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    // If console is enabled, it will print the matrix position and status of each key pressed
-#ifdef CONSOLE_ENABLE
-    uprintf("KL: kc: 0x%04X, col: %2u, row: %2u, pressed: %u, time: %5u, int: %u, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
-#endif
 
     // update_swapper(
     //     &sw_win_active, KC_LGUI, KC_TAB, SW_WIN,
@@ -177,7 +173,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     //
     // Store the current modifier state in the variable for later reference
     static bool delkey_registered;
-    mod_state = get_mods();
+    uint8_t mod_state = get_mods();
+    // If console is enabled, it will print the matrix position and status of each key pressed
+#ifdef CONSOLE_ENABLE
+    uprintf("KL: kc: 0x%04X, col: %2u, row: %2u, pressed: %u, time: %5u, int: %u, count: %u, mod: 0x%04X\n",
+            keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count, mod_state);
+#endif
     switch (keycode) {
 
         // https://docs.qmk.fm/#/feature_macros?id=advanced-macro-functions
@@ -195,20 +196,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         //   break;
 
 
-        case OSM_SFT:
-            if (record->event.pressed) {
-                println("in shift hold");
-                handle_locked_mod(LETTER_S);
-            } else {
-                println("in shift release");
-                // might be locked.
-                if (record->tap.count < 2) {
-                    handle_unlocked_mod(LETTER_S);
-                }
-            }
+        // case OSM_SFT:
+        //     if (record->event.pressed) {
+        //         println("in shift hold");
+        //         handle_locked_mod(LETTER_S);
+        //     } else {
+        //         println("in shift release");
+        //         release_shift();
+        //     }
 
-            draw_mods();
-            break;
+        //     draw_mods();
+        //     break;
 
         case SYM_LDR:
             if (record->event.pressed) {
