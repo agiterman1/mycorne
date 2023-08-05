@@ -8,6 +8,7 @@
 #include "keymap.h"
 #include "color.h"
 #include "swapper.h"
+#include "oled.h"
 
 
 enum custom_keycodes {
@@ -168,10 +169,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     uprintf("KL: kc: 0x%04X, col: %2u, row: %2u, pressed: %u, time: %5u, int: %u, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
 #endif
 
-    update_swapper(
-        &sw_win_active, KC_LGUI, KC_TAB, SW_WIN,
-        keycode, record
-    );
+    // update_swapper(
+    //     &sw_win_active, KC_LGUI, KC_TAB, SW_WIN,
+    //     keycode, record
+    // );
     //
     // Store the current modifier state in the variable for later reference
     static bool delkey_registered;
@@ -194,13 +195,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 
         // case KC_BSPC:
+        case OSM_SFT:
+            if (record->event.pressed) {
+                println("in shift hold");
+                handle_locked_mod((char) 137);
+            } else {
+                println("in shift release");
+                // might be locked.
+                if (record->tap.count < 2) {
+                    handle_unlocked_mod((char) 137);
+                }
+            }
+            draw_mods();
+            break;
         case LOW_LDR:
             if (record->event.pressed) {
                  key_timer = timer_read();
-            } else {
-                if (timer_elapsed(key_timer) < TAPPING_TERM ) {
-                    if ( !is_in_leader )
-                        leader_start();
+            } else { if (timer_elapsed(key_timer) < TAPPING_TERM ) { if ( !is_in_leader ) leader_start();
                     else
                         leader_end();
                     return true;

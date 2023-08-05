@@ -21,6 +21,7 @@
 #define OLED_DISPLAY_128X32
 #define OLED_DISPLAY_WIDTH 128
 #define OLED_DISPLAY_HEIGHT 32
+#define OLED_FONT_H "font.c"
 
 // #undef RGB_MATRIX_LED_COUNT
 // #define RGB_MATRIX_LED_COUNT 2
