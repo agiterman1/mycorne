@@ -32,13 +32,13 @@ bool oled_task_user(void) {
             oled_write_P(PSTR("Def\n"), false);
             light_led( COLOR_QWERTY );
             break;
-        case _RAISE:
-            oled_write_P(PSTR("RAISE\n"), false);
-            light_led( COLOR_RAISE );
+        case _NAV:
+            oled_write_P(PSTR("NAV\n"), false);
+            light_led( COLOR_NAV );
             break;
-        case _LOWER:
-            oled_write_P(PSTR("LOWER\n"), false);
-            light_led( COLOR_LOWER );
+        case _SYM:
+            oled_write_P(PSTR("SYMB\n"), false);
+            light_led( COLOR_SYM );
             break;
         default:
             // Or use the write_ln shortcut over adding '\n' to the end of your string

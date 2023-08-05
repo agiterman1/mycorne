@@ -1,3 +1,4 @@
+#include "keycodes.h"
 #include QMK_KEYBOARD_H
 #include "quantum.h"
 #include "raw_hid.h"
@@ -8,12 +9,12 @@
 #include "keymap.h"
 #include "color.h"
 #include "swapper.h"
-
+#include "keymap.h"
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
-  LOWER,
-  RAISE,
+  SYM,
+  NAV,
   SW_WIN,  // Switch to next window         (cmd-tab)
 };
 
@@ -37,14 +38,14 @@ combo_t key_combos[] = {
 #define OSM_AGR  OSM(MOD_RALT)
 #define OSL_FUN  OSL(_FUNC)
 #define GUI_ENT  GUI_T(KC_ENT)
-#define LOW_LDR  LT(_LOWER, KC_NO)
-#define RSE_BSP  LT(_RAISE, KC_BSPC)
+#define SYM_LDR  LT(_SYM, KC_NO)
+#define RSE_BSP  LT(_NAV, KC_BSPC)
 #define OSM_SFT  OSM(MOD_LSFT)
 
 #define GUI_BSP  GUI_T(KC_BSPC)
-#define RSE_ENT  LT(_RAISE, KC_ENT)
+#define RSE_ENT  LT(_NAV, KC_ENT)
 
-// For _RAISE layer
+// For _NAV layer
 #define CTL_ESC  LCTL_T(KC_ESC)
 #define OSM_ALT  OSM(MOD_LALT)
 #define K_CPY    C(S(KC_C))
@@ -54,18 +55,18 @@ combo_t key_combos[] = {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,QK_LOCK,
+        KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
        CTL_ESC,   KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,KC_QUOT ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
        OSM_SFT,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                         OSM_ALT, GUI_BSP, LOW_LDR,   RSE_ENT ,KC_SPC  ,OSM_SFT
+                                         OSM_ALT, GUI_BSP, SYM_LDR,   RSE_ENT ,KC_SPC  ,OSM_SFT
                                          // OSM_LCTL, GUI_ENT, LOW_TAB,   RSE_BSP ,KC_SPC  ,OSM_SFT
                                       //`--------------------------'  `--------------------------'
   ),
 
-  [_LOWER] = LAYOUT(
+  [_SYM] = LAYOUT(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       _______, KC_EXLM, KC_AT,  KC_HASH, KC_DLR,  KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______ ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -73,12 +74,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, XXXXXXX , KC_TILD,KC_GRV, KC_LBRC, KC_LCBR,                       KC_RCBR, KC_RBRC, KC_COMM,KC_DOT,  KC_SLSH, _______ ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_TRNS,  KC_TRNS, LOWER,    KC_TRNS, KC_TRNS, KC_COLON
+                                          KC_TRNS,  KC_TRNS, SYM   ,    KC_TRNS, KC_TRNS, KC_COLON
                                       //`--------------------------'  `--------------------------'
     ),
 
 
-  [_RAISE] = LAYOUT(
+  [_NAV] = LAYOUT(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       _______, KC_DEL , XXXXXXX, KC_UNDS, KC_PLUS, KC_PGUP,                      XXXXXXX, XXXXXXX, XXXXXXX, KC_BSLS, KC_PIPE,_______ ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -86,13 +87,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, KC_LT  , KC_GT  , K_CPY  , K_PST  , KC_SCLN,                      KC_MPLY, KC_MPRV, KC_MNXT, KC_VOLD, KC_VOLU,_______ ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          CTL_ESC, KC_TRNS, XXXXXXX,    RAISE  , KC_TRNS, KC_TRNS
+                                          CTL_ESC, KC_TRNS, XXXXXXX,    NAV  , KC_TRNS, KC_TRNS
                                       //`--------------------------'  `--------------------------'
   ),
 
   [_FUNC] = LAYOUT(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      _______, KC_F1  , KC_F2  , KC_F3   , KC_F4 ,  KC_F5 ,                     KC_F6   , KC_F7  , KC_F8  , KC_F9  , KC_F10 ,_______ ,
+      _______, KC_F1  , KC_F2  , KC_F3   , KC_F4 ,  KC_F5 ,                     KC_F6   , KC_F7  , KC_F8  , KC_F9  , KC_F10 ,QK_LOCK ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, KC_F11 , KC_F12 , XXXXXXX, XXXXXXX, XXXXXXX,                     KC_MS_L , KC_MS_D, KC_MS_U, KC_MS_R,XXXXXXX ,TO(_QWERTY),
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -135,9 +136,9 @@ void keyboard_post_init_user() {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-      case LT(_RAISE, KC_BSPC):
+      case LT(_NAV, KC_BSPC):
             return TAPPING_TERM_THUMB;
-      case LT(_LOWER, KC_TAB):
+      case LT(_SYM, KC_TAB):
             return TAPPING_TERM_THUMB;
       default:
             return TAPPING_TERM;
@@ -194,7 +195,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 
         // case KC_BSPC:
-        case LOW_LDR:
+        case SYM_LDR:
             if (record->event.pressed) {
                  key_timer = timer_read();
             } else {
