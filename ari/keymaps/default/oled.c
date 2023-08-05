@@ -9,7 +9,7 @@
 
 
 #include "keymap.h"
-#define modLength 10
+#define MODLENGTH 10
 
 const uint8_t maxY = 18;
 
@@ -139,23 +139,23 @@ bool oled_task_user(void) {
 
 
 
+// add c to buffer (only if not there)
 void handle_locked_mod(char c) {
-    bool inArr = false;
+    if ( modIndex + 1 == MODLENGTH ) return;
+
     for (uint8_t i = 0; i < modIndex; i++) {
-        if (arr[i] == c) inArr = true;
+        if (arr[i] == c) return;
     }
 
-    if (!inArr) {
-        arr[modIndex] = c;
-        modIndex++;
-    }
+    arr[modIndex] = c;
+    modIndex++;
 }
 
+// remove c from buffer (only if it is there)
 void handle_unlocked_mod(char c) {
         for (uint8_t i = 0; i < modIndex; i++) {
             if (arr[i] == c) {
                 char temp=arr[i];
-                {
                     for(uint8_t j=i;j<modIndex-1;j++)
                     arr[j]=arr[j+1];
                 }
@@ -177,7 +177,7 @@ void oneshot_locked_mods_changed_user(uint8_t mods) {
         if (is_shift_locked) {
             is_shift_locked = false;
             println("Oneshot locked mods SHIFT OFF");
-            handle_unlocked_mod((char) 137);
+            handle_unlocked_mod(137);
         }
 
     }
