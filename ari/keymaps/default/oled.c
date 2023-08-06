@@ -92,8 +92,16 @@ bool oled_task_user(void) {
 
     switch (get_highest_layer(layer_state)) {
         case _QWERTY:
-            oled_write_ln(PSTR("Def"), false);
-            light_led( COLOR_QWERTY );
+            switch (biton32(eeconfig_read_default_layer())) {
+              case _QWERTY:
+                oled_write_ln(PSTR("ARI"), false);
+                light_led( COLOR_QWERTY );
+                break;
+              case _RANI:
+                oled_write_ln(PSTR("RANI"), false);
+                light_led( COLOR_RANI );
+                break;
+            };
             break;
         case _NAV:
             oled_write_ln(PSTR("NAV"), false);

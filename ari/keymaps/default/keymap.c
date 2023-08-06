@@ -8,7 +8,6 @@
 
 #include "keymap.h"
 #include "color.h"
-#include "swapper.h"
 #include "oled.h"
 
 
@@ -17,6 +16,8 @@ enum custom_keycodes {
   SYM,
   NAV,
   ALT_TAB,  // Switch to next window         (cmd-tab)
+  RANI,
+  ARI
 };
 
 enum combos {
@@ -58,13 +59,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
         KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,ALT_TAB ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-       CTL_ESC,   KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,KC_QUOT ,
+       OSM_ALT,   KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,KC_QUOT ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-       OSM_SFT,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
+       OSM_SFT,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_1 ,OSL_FUN ,
+       // OSM_SFT,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                         OSM_ALT, GUI_BSP, SYM_LDR,     NAV_ENT,KC_SPC  ,OSM_SFT
+                                         CTL_ESC, GUI_BSP, SYM_LDR,     NAV_ENT,KC_SPC  ,OSM_SFT
                                          // OSM_LCTL, GUI_ENT, SYM_TAB,   NAV_BSP ,KC_SPC  ,OSM_SFT
                                       //`--------------------------'  `--------------------------'
+  ),
+
+  [_RANI] = LAYOUT(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+        KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,ALT_TAB ,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+       CTL_ESC,   KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,KC_QUOT ,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+       OSM_SFT,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_3 ,OSL_FUN ,
+       // OSM_SFT,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                         OSM_ALT, GUI_BSP, SYM_LDR,     NAV_ENT,KC_SPC  ,OSM_SFT
   ),
 
   [_SYM] = LAYOUT(
@@ -100,9 +114,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, KC_CAPS, K_CUT  , K_CPY  , K_PST  , XXXXXXX,                     KC_WH_L , KC_WH_D, KC_WH_U, KC_WH_R,QK_BOOT ,_______ ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          XXXXXXX, XXXXXXX, XXXXXXX,    KC_BTN1, KC_BTN3, KC_BTN2
+                                            ARI  , RANI   , XXXXXXX,    KC_BTN1, KC_BTN3, KC_BTN2
                                       //`--------------------------'  `--------------------------'
-  )
+  ),
+
 };
 
 
@@ -111,6 +126,9 @@ bool is_in_leader = false;
 bool sw_win_active = false;
 
 void keyboard_pre_init_user() {
+
+    // default_layer_set(_QWERTY);
+    // set_single_persistent_default_layer(_QWERTY);
 
     // light_led( RGB_RED );
     // key_timer = timer_read();
@@ -169,11 +187,6 @@ uint16_t alt_tab_timer = 0;     // we will be using them soon.
 // return false; // Skip all further processing of this key
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
-    // update_swapper(
-    //     &sw_win_active, KC_LGUI, KC_TAB, SW_WIN,
-    //     keycode, record
-    // );
-    //
     // Store the current modifier state in the variable for later reference
     static bool delkey_registered;
     uint8_t mod_state = get_mods();
@@ -271,6 +284,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // Let QMK process the KC_BSPC keycode as usual outside of shift
             return true;
 
+        case ARI:
+            if (record->event.pressed) {
+                // set_single_persistent_default_layer(_QWERTY);
+                // default_layer_set(_QWERTY);
+                set_single_persistent_default_layer(_QWERTY);
+            }
+            return false;
+
+        case RANI:
+            if (record->event.pressed) {
+                // set_single_persistent_default_layer(_RANI);
+                // default_layer_set(_RANI);
+                set_single_persistent_default_layer(_RANI);
+                light_led(COLOR_CONFIRM);
+            }
+            return false;
     }
 
     return true;

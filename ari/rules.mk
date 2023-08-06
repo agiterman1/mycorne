@@ -1,7 +1,6 @@
 SRC += leader.c \
 	   color.c \
-	   oled.c \
-	   swapper.c
+	   oled.c
 
 
 
