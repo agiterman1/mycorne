@@ -15,65 +15,62 @@
 
 const uint8_t maxY = 18;
 
-// const uint8_t MODLENGTH = 10;
+typedef union {
+    uint8_t raw;
+    struct {
+        bool inverse : 1;
+        int c : 7;
+    } mod;
+} mod_t;
 int8_t modIndex = -1;
-char arr[MODLENGTH] = {0};
-char last_arr[MODLENGTH] = {1};
+mod_t arr[MODLENGTH] = { {0} };
+mod_t last_arr[MODLENGTH] = { {1} };
 
 extern bool is_in_leader;
 
-static void render_letter(const char c, uint8_t y, bool invert) {
+static void render_letter(const char c, uint8_t y, bool inverse) {
     for (size_t i = 0; i < 3; i++) {
         oled_set_cursor(y+i, 2);
-        oled_write_char((const char) c+i, invert);
+        oled_write_char(c+i + 100, inverse);
 
         oled_set_cursor(y+i, 3);
-        oled_write_char((const char) c+i+32, invert);
+        oled_write_char(c+i+32 + 100, inverse);
     }
 }
 
 // draw mods (vertical)
 void draw_mods(void) {
-    printf("draw_mods, modIndex: %d\n", modIndex);
+    // printf("draw_mods, modIndex: %d\n", modIndex);
     if (modIndex == -1) return; // nothing on screen
 
     if (modIndex == 0) {        // last mod released
         oled_clear();
-        arr[0] = 0; last_arr[0] = 1;
+        arr[0].raw = 0; last_arr[0].raw = 1;
         modIndex--;
         return;
     }
-    printf("draw_mods, test buffers\n");
+    // printf("draw_mods, test buffers\n");
 
     // compare arrays (avoid drawing twice the same image)
     uint8_t i;
     for (i = 0; i < MODLENGTH; i++) {
-        if (arr[i] != last_arr[i]) {
+        if (arr[i].raw != last_arr[i].raw ) {
             break;
         }
     }
-    printf("draw_mods, %d, %d\n", i, modIndex);
+    // printf("draw_mods, %d, %d\n", i, modIndex);
     if (i == MODLENGTH) return; // frame not changed. nothing to draw
-    printf("draw_mods,  DRAW!\n");
+    // printf("draw_mods,  DRAW!\n");
 
     // draw vertical
     oled_clear();
-    bool invert;
-    uint8_t locked_mods;
     for (uint8_t i = 0; i < modIndex; i++) {
-
-        invert = false;
-        locked_mods = get_oneshot_locked_mods();
-
-        if ( ~MOD_MASK_SHIFT & locked_mods || ~MOD_MASK_ALT & locked_mods || ~MOD_MASK_CTRL & locked_mods || ~MOD_MASK_GUI &locked_mods )
-            invert = true;
-
-        render_letter((const char) arr[i], maxY - i * 3, invert);
+        render_letter( arr[i].mod.c, maxY - i * 3, arr[i].mod.inverse );
     }
 
     // copy arr to last_arr
     for (uint8_t i = 0; i < MODLENGTH; i++) {
-        last_arr[i] = arr[i];
+        last_arr[i].raw= arr[i].raw;
     }
 }
 
@@ -85,10 +82,10 @@ bool oled_task_user(void) {
     // println("OLED_TASK_USER");
 
     uint8_t mod_state = get_mods();
-    (mod_state & MOD_MASK_SHIFT) ? handle_locked_mod(LETTER_S) : handle_unlocked_mod(LETTER_S);
-    (mod_state & MOD_MASK_ALT) ? handle_locked_mod(LETTER_A) : handle_unlocked_mod(LETTER_A);
-    (mod_state & MOD_MASK_CTRL) ? handle_locked_mod(LETTER_C) : handle_unlocked_mod(LETTER_C);
-    (mod_state & MOD_MASK_GUI) ? handle_locked_mod(LETTER_G) : handle_unlocked_mod(LETTER_G);
+    (mod_state & MOD_MASK_SHIFT) ? mod_add(LETTER_S) : mod_remove(LETTER_S);
+    (mod_state & MOD_MASK_ALT)   ? mod_add(LETTER_A) : mod_remove(LETTER_A);
+    (mod_state & MOD_MASK_CTRL)  ? mod_add(LETTER_C) : mod_remove(LETTER_C);
+    (mod_state & MOD_MASK_GUI)   ? mod_add(LETTER_G) : mod_remove(LETTER_G);
     if (modIndex >= 0 ) draw_mods();
 
     oled_set_cursor(0,0);
@@ -172,32 +169,46 @@ bool oled_task_user(void) {
 
 
 // add c to buffer (only if not there)
-void handle_locked_mod(char c) {
-    printf("handle_locked_mod, modIndex: %d\n", modIndex);
+void mod_add(char c) {
+    // printf("mod_add, modIndex: %d, c: %d\n", modIndex, c);
     if (modIndex == -1) modIndex = 0;
 
     if ( modIndex + 1 == MODLENGTH ) return;
 
     for (uint8_t i = 0; i < modIndex; i++) {
-        if (arr[i] == c) return;
+        if (arr[i].mod.c == c) return;
     }
 
-    printf("handle_locked_mod, Add: %d\n", c);
-    arr[modIndex++] = c;
+    uint8_t locked_mods = get_oneshot_locked_mods();
+    // printf("mod_add, Add: %d, mods: %x\n", c, locked_mods);
+    arr[modIndex].mod.c = c;
+    if ( c == LETTER_S )
+        arr[modIndex++].mod.inverse = MOD_MASK_SHIFT & locked_mods;
+    if ( c == LETTER_C )
+        arr[modIndex++].mod.inverse = MOD_MASK_CTRL & locked_mods;
+    if ( c == LETTER_A )
+        arr[modIndex++].mod.inverse = MOD_MASK_ALT & locked_mods;
+    if ( c == LETTER_G )
+        arr[modIndex++].mod.inverse = MOD_MASK_GUI & locked_mods;
+    // printf("mod_add, modIndex: %d, added: %d,%d\n", modIndex-1, arr[modIndex-1].mod.c, arr[modIndex-1].mod.inverse);
+
 }
 
 // remove c from buffer (only if it is there)
-void handle_unlocked_mod(char c) {
-        for (uint8_t i = 0; i < modIndex; i++) {
-            if (arr[i] == c) {
-                // shift elements to the left
-                for(uint8_t j=i;j<modIndex;j++)
-                    arr[j]=arr[j+1];
+void mod_remove(char c) {
+    if ( modIndex == -1 ) return;
 
-                modIndex--; // the number of mods is down by 1
-                return;
-            }
+    // printf("mod_remove, modIndex: %d, c: %d\n", modIndex, c);
+    for (uint8_t i = 0; i < modIndex; i++) {
+        if (arr[i].mod.c == c) {
+            // shift elements to the left
+            for(uint8_t j=i;j<modIndex;j++)
+                arr[j].raw=arr[j+1].raw;
+
+            modIndex--; // the number of mods is down by 1
+            return;
         }
+    }
 }
 
 // bool is_shift_locked = false;
