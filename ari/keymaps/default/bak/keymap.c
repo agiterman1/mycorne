@@ -142,9 +142,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 long last_color;
 bool is_in_leader = false;
 
+void keyboard_pre_init_user() {
+
+    // default_layer_set(_QWERTY);
+    // set_single_persistent_default_layer(_QWERTY);
+
+    // light_led( RGB_RED );
+    // key_timer = timer_read();
+    // setPinOutput(PS2_RST_PIN);
+    // writePinHigh(PS2_RST_PIN);
+    //         wait_ms(10);
+    // writePinLow(PS2_RST_PIN);
+
+}
 void keyboard_post_init_user() {
     register_led_msg();
 
+    // light_led( RGB_GREEN );
+  //     rgblight_enable();
+  // rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+  // rgblight_setrgb(RGB_CLEAR);
+
+    // rgblight_enable_noeeprom(); // enables Rgb, without saving settings
+    // rgblight_sethsv(200, 255, 255); // sets the color to teal/cyan without saving
+    // rgblight_mode(RGBLIGHT_MODE_BREATHING); // sets mode to Fast breathing without saving
     last_color = 0;
     light_led(COLOR_ON);
 }
@@ -159,6 +180,19 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
             return TAPPING_TERM;
     }
 }
+
+// layer_state_t layer_state_set_user(layer_state_t state) {
+  // switch (biton32(state)) {
+  // case _QWERTY:
+  //   uprintf("layer: DEF\n");
+  //   break;
+  // case _SYMB:
+  //   uprintf("layer: SYM\n");
+  //   break;
+  // }
+  // return state;
+// }
+
 
 bool is_oneshot_cancel_key(uint16_t keycode) {
     switch (keycode) {
@@ -199,6 +233,7 @@ oneshot_state os_alt_state = os_up_unqueued;
 oneshot_state os_gui_state = os_up_unqueued;
 
 
+// uint8_t mod_state;
 uint16_t key_timer; // declare key_timer for use in macro
 bool is_alt_tab_active = false; // ADD this near the beginning of keymap.c
 uint16_t alt_tab_timer = 0;     // we will be using them soon.
@@ -234,6 +269,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #endif
     switch (keycode) {
 
+        // https://docs.qmk.fm/#/feature_macros?id=advanced-macro-functions
+        // case ALT_TAB:
+        //   if (record->event.pressed) {
+        //     if (!is_alt_tab_active) {
+        //       is_alt_tab_active = true;
+        //       register_code(KC_LALT);
+        //     }
+        //     alt_tab_timer = timer_read();
+        //     register_code(KC_TAB);
+        //   } else {
+        //     unregister_code(KC_TAB);
+        //   }
+        //   break;
+
+
+        // case OSM_SFT:
+        //     if (record->event.pressed) {
+        //         println("in shift hold");
+        //         handle_locked_mod(LETTER_S);
+        //     } else {
+        //         println("in shift release");
+        //         release_shift();
+        //     }
+
+        //     draw_mods();
+        //     break;
         case ALT_TAB:
               if (record->event.pressed) {
                 if (!is_alt_tab_active) {
@@ -259,16 +320,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     return true;
                 }
             }
+            // rgblight_setrgb(RGB_BLUE);
             break;
 
         case GUI_BSP:
                 // of the delete key status: registered or not?
             if (record->event.pressed) {
                 // Detect the activation of either shift keys
-#ifdef CONSOLE_ENABLE
+// #ifdef CONSOLE_ENABLE
      uprintf("mod_state: 0x%04X, MOD_MASK_SHIFT: 0x%04X\n", mod_state, MOD_MASK_SHIFT);
-#endif
+// #endif
                 if (mod_state & MOD_MASK_SHIFT) {
+                    // uprintf("shif hold\n");
+                    // light_led( COLOR_LEADER );
                     // First temporarily canceling both shifts so that
                     // shift isn't applied to the KC_DEL keycode
                     del_mods(MOD_MASK_SHIFT);
@@ -323,3 +387,46 @@ void matrix_scan_user(void) { // The very important timer.
   }
 }
 
+void ps2_mouse_moved_user(report_mouse_t *mouse_report) {
+#ifdef CONSOLE_ENABLE
+    uprintf("MS: x: %d, y: %d\n", mouse_report->x, mouse_report->y);
+#endif
+}
+
+
+// const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+
+// // This globally defines all key overrides to be used
+// const key_override_t **key_overrides = (const key_override_t *[]){
+// 	&delete_key_override,
+// 	NULL // Null terminate the array of overrides!
+// };
+
+
+// const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+
+// // This globally defines all key overrides to be used
+//
+// const key_override_t **key_overrides = (const key_override_t *[]){
+//     &delete_key_override,
+//     NULL // Null terminate the array of overrides!
+// };
+
+
+
+
+
+
+/*
+ * void oneshot_locked_mods_changed_user(uint8_t mods) {
+    if (mods & MOD_MASK_SHIFT) {
+        del_mods(MOD_MASK_SHIFT);
+        set_oneshot_locked_mods(~MOD_MASK_SHIFT & get_oneshot_locked_mods());   // this will remove the lock!
+        caps_word_on();
+    }
+}*/
+
+
+/*
+* set_single_persistent_default_layer
+*/
