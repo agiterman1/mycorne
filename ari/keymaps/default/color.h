@@ -3,6 +3,7 @@
 #define COLOR_ON     RGB_ORANGE
 #define COLOR_QWERTY RGB_BLACK
 #define COLOR_RANI   RGB_BLACK
+#define COLOR_MOD    RGB_YELLOW
 #define COLOR_NAV    RGB_GREEN
 #define COLOR_SYM    RGB_WHITE
 #define COLOR_FUNC   RGB_RED

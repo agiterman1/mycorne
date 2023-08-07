@@ -109,6 +109,10 @@ bool oled_task_user(void) {
                 break;
             };
             break;
+        case _MOD:
+            oled_write_ln(PSTR("MOD"), false);
+            light_led( COLOR_MOD );
+            break;
         case _NAV:
             oled_write_ln(PSTR("NAV"), false);
             light_led( COLOR_NAV );
