@@ -1,6 +1,7 @@
 SRC += leader.c \
 	   color.c \
-	   oled.c
+	   oled.c \
+	   oneshot.c
 
 
 

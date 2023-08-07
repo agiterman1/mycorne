@@ -7,6 +7,7 @@
 enum custom_layers {
   _QWERTY,
   _RANI,
+  _MOD,
   _SYM,
   _NAV,
   _FUNC,
