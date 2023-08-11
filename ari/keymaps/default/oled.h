@@ -7,3 +7,8 @@ void draw_mods(void);
 #define LETTER_C (134-100)
 #define LETTER_G (140-100)
 
+#define LETTER_R_NAME (143-100)
+#define LETTER_N_NAME (145-100)
+#define LETTER_I_NAME (147-100)
+#define LETTER_A_NAME (149-100)
+
