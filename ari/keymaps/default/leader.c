@@ -27,6 +27,7 @@ void leader_end_user(void) {
     if (leader_sequence_one_key(KC_V))
         SEND_STRING(SS_LCTL("v"));
 
+
     // select to end of line
     if (leader_sequence_two_keys(KC_L, KC_E))
         SEND_STRING(SS_LSFT(SS_TAP(X_END)));
@@ -43,12 +44,14 @@ void leader_end_user(void) {
     if (leader_sequence_two_keys(KC_L, KC_C))
         SEND_STRING(SS_TAP(X_HOME) SS_LSFT(SS_TAP(X_END)) SS_LCTL("c"));
 
+
     // TMUX - a
     if (leader_sequence_one_key(KC_A)) {
         tmux_prefix();
     }
+
     //
-    // TMUX - shift to last pane
+    // TMUX - goto to last pane
     if (leader_sequence_one_key(KC_SEMICOLON)) {
         tmux_prefix();
         SEND_STRING(";");
