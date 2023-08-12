@@ -11,6 +11,7 @@
 #include "color.h"
 #include "oled.h"
 
+#include "features/caps_word.h"
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
@@ -94,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX,  OS_GUI,  OS_ALT, OS_SHFT, OS_CTRL, XXXXXXX,                     XXXXXXX ,OS_CTRL , OS_SHFT, OS_ALT ,OS_GUI  ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+      XXXXXXX, XXXXXXX, XXXXXXX, CW_TOGG, XXXXXXX, XXXXXXX,                     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______,_______ ,_______
 
@@ -229,6 +230,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         keycode, record
     );
 
+    if (!process_caps_word(keycode, record)) { return false; }
     // Store the current modifier state in the variable for later reference
     // static bool delkey_registered;
     uint8_t mod_state = get_mods();

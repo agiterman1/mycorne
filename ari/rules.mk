@@ -1,9 +1,11 @@
 SRC += leader.c \
 	   color.c \
 	   oled.c \
-	   oneshot.c
+	   oneshot.c \
+	   features/caps_word.c
 
-
+# Disable QMK core's Caps Word implementation.
+CAPS_WORD_ENABLE = no
 
 
 # OLED_ENABLE = yes
