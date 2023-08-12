@@ -38,6 +38,16 @@ static void render_letter(const char c, uint8_t y, bool inverse) {
     }
 }
 
+static void render_letter_name(const char c, uint8_t y, bool inverse) {
+    for (size_t i = 0; i < 2; i++) {
+        oled_set_cursor(y+i, 2);
+        oled_write_char(c+i + 100, inverse);
+
+        oled_set_cursor(y+i, 3);
+        oled_write_char(c+i+32 + 100, inverse);
+    }
+}
+
 // draw mods (vertical)
 void draw_mods(void) {
     // printf("draw_mods, modIndex: %d\n", modIndex);
@@ -74,9 +84,18 @@ void draw_mods(void) {
     }
 }
 
+bool init = false;
 bool oled_task_user(void) {
     if (!is_keyboard_master()) {
         return false;
+    }
+
+    if (!init) {
+        render_letter_name(LETTER_R_NAME, 0, false);
+        render_letter_name(LETTER_A_NAME, 3, false);
+        render_letter_name(LETTER_N_NAME, 6, false);
+        render_letter_name(LETTER_I_NAME, 9, false);
+        init = true;
     }
 
     // println("OLED_TASK_USER");
@@ -104,7 +123,8 @@ bool oled_task_user(void) {
                 light_led( COLOR_QWERTY );
                 break;
               case _RANI:
-                oled_write_ln(PSTR("RANI"), false);
+                init = false;
+                oled_write_ln(PSTR(""), false);
                 light_led( COLOR_RANI );
                 break;
             };

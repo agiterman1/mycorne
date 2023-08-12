@@ -301,6 +301,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case ARI:
             if (record->event.pressed) {
                 // default_layer_set(_QWERTY);
+                oled_clear(); // clear oled
                 set_single_persistent_default_layer(_QWERTY);
             }
             return false;
@@ -311,6 +312,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 set_single_persistent_default_layer(_RANI);
                 light_led(COLOR_CONFIRM);
             }
+
             return false;
     }
 
