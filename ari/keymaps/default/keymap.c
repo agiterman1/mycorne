@@ -60,6 +60,7 @@ combo_t key_combos[] = {
 #define K_CUT    C(KC_X)
 
 #define LA_MOD MO(_MOD)
+#define LA_SYM MO(_SYM)
 // LA_MOD
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT(
@@ -70,7 +71,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       OS_SHFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                           OS_GUI, KC_BSPC, SYM_LDR,   NAV_ENT ,KC_SPC  ,LA_MOD
+                                           OS_GUI, KC_BSPC, LA_SYM,   NAV_ENT ,KC_SPC  ,LA_MOD
                                          // OSM_LCTL, GUI_ENT, SYM_TAB,   NAV_BSP ,KC_SPC  ,OSM_SFT
                                       //`--------------------------'  `--------------------------'
   ),
@@ -83,7 +84,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       OSM_SFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                         OSM_ALT , KC_BSPC, SYM_LDR,   NAV_ENT ,KC_SPC  ,KC_LGUI
+                                         OSM_ALT , KC_BSPC, LA_SYM,   NAV_ENT ,KC_SPC  ,KC_LGUI
                                          // OSM_ALT, GUI_BSP, SYM_LDR,     NAV_ENT,KC_SPC  ,OSM_SFT
   ),
 
@@ -105,7 +106,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, KC_1,    KC_2,   KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0    ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, XXXXXXX, KC_TILD,KC_GRV, KC_LBRC, KC_LCBR,                       KC_RCBR, KC_RBRC ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+      _______, XXXXXXX, KC_TILD,KC_GRV, KC_LBRC, KC_LCBR,                       KC_RCBR, KC_RBRC ,QK_LEAD ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           KC_TRNS,  KC_TRNS, SYM   ,    KC_TRNS, KC_UNDS, KC_COLON
                                       //`--------------------------'  `--------------------------'
@@ -181,7 +182,7 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
     // case KC_BSPC:
     case CTL_ESC:
     case OSM_SFT:
-    case SYM_LDR:
+    case LA_SYM:
     case NAV_ENT:
     case OSL_FUN:
     // case KC_SPC:
@@ -251,19 +252,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               }
               break;
 
-        case SYM_LDR:
-            if (record->event.pressed) {
-                 key_timer = timer_read();
-            } else {
-                if (timer_elapsed(key_timer) < TAPPING_TERM ) {
-                    if ( !is_in_leader )
-                        leader_start();
-                    else
-                        leader_end();
-                    return true;
-                }
-            }
-            break;
+        // case SYM_LDR:
+        //     if (record->event.pressed) {
+        //          key_timer = timer_read();
+        //     } else {
+        //         if (timer_elapsed(key_timer) < TAPPING_TERM ) {
+        //             if ( !is_in_leader )
+        //                 leader_start();
+        //             else
+        //                 leader_end();
+        //             return true;
+        //         }
+        //     }
+        //     break;
 
 //         case GUI_BSP:
 //                 // of the delete key status: registered or not?
