@@ -84,19 +84,11 @@ void draw_mods(void) {
     }
 }
 
-bool init = false;
 bool oled_task_user(void) {
     if (!is_keyboard_master()) {
         return false;
     }
 
-    if (!init) {
-        render_letter_name(LETTER_R_NAME, 0, false);
-        render_letter_name(LETTER_A_NAME, 3, false);
-        render_letter_name(LETTER_N_NAME, 6, false);
-        render_letter_name(LETTER_I_NAME, 9, false);
-        init = true;
-    }
 
     // println("OLED_TASK_USER");
 
@@ -123,9 +115,12 @@ bool oled_task_user(void) {
                 light_led( COLOR_QWERTY );
                 break;
               case _RANI:
-                init = false;
                 oled_write_ln(PSTR(""), false);
                 light_led( COLOR_RANI );
+                render_letter_name(LETTER_R_NAME, 0, false);
+                render_letter_name(LETTER_A_NAME, 3, false);
+                render_letter_name(LETTER_N_NAME, 6, false);
+                render_letter_name(LETTER_I_NAME, 9, false);
                 break;
             };
             break;
