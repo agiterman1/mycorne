@@ -48,13 +48,20 @@ static void render_letter_name(const char c, uint8_t y, bool inverse) {
     }
 }
 
+// clear line 2 and line 3
+void oled_clear_mods(void) {
+    oled_set_cursor(0, 2);
+    oled_write_ln(PSTR(""), false);
+    oled_write_ln(PSTR(""), false);
+
+}
 // draw mods (vertical)
 void draw_mods(void) {
     // printf("draw_mods, modIndex: %d\n", modIndex);
     if (modIndex == -1) return; // nothing on screen
 
     if (modIndex == 0) {        // last mod released
-        oled_clear();
+        oled_clear_mods();
         arr[0].raw = 0; last_arr[0].raw = 1;
         modIndex--;
         return;
@@ -73,7 +80,7 @@ void draw_mods(void) {
     // printf("draw_mods,  DRAW!\n");
 
     // draw vertical
-    oled_clear();
+    oled_clear_mods();
     for (uint8_t i = 0; i < modIndex; i++) {
         render_letter( arr[i].mod.c, maxY - i * 3, arr[i].mod.inverse );
     }
