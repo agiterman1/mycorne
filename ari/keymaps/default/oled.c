@@ -119,7 +119,6 @@ bool oled_task_user(void) {
         case _QWERTY:
             switch (biton32(eeconfig_read_default_layer())) {
               case _QWERTY:
-                oled_clear(); // clear oled
                 oled_write_ln(PSTR("ARI"), false);
                 light_led( COLOR_QWERTY );
                 break;
