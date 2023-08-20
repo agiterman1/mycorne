@@ -27,6 +27,9 @@ void leader_end_user(void) {
     if (leader_sequence_one_key(KC_V))
         SEND_STRING(SS_LCTL("v"));
 
+    // vim write
+    if (leader_sequence_one_key(KC_W))
+        SEND_STRING(SS_TAP(X_ESC) ":w" SS_TAP(X_ENTER));
 
     // select to end of line
     if (leader_sequence_two_keys(KC_L, KC_E))

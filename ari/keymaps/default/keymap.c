@@ -1,78 +1,50 @@
 #include QMK_KEYBOARD_H
 #include "keycodes.h"
-#include "quantum.h"
+// #include "quantum.h"
 #include "raw_hid.h"
 #include "transactions.h"
 
 #include "print.h"
 
 #include "keymap.h"
-#include "oneshot.h"
 #include "color.h"
 #include "oled.h"
 
 #include "features/caps_word.h"
+#include "features/oneshot.h"
+#include "features/layermodes.h"
 
-enum custom_keycodes {
-  QWERTY = SAFE_RANGE,
-  SYM,
-  NAV,
-  ALT_TAB,  // Switch to next window         (cmd-tab)
-  RANI,
-  ARI,
-    OS_SHFT,
-    OS_CTRL,
-    OS_ALT,
-    OS_GUI,
-};
 
 enum combos {
   DF_DASH,
-  JK_ESC
+  JK_ESC,
+  HJ_LEADER,
 };
 
 const uint16_t PROGMEM df_combo[] = {KC_D, KC_F, COMBO_END};
 const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
+const uint16_t PROGMEM hj_combo[] = {KC_H, KC_J, COMBO_END};
 
 combo_t key_combos[] = {
   // Add commonly used dash to home row
   [DF_DASH]    = COMBO(df_combo, KC_MINS),
   // For Vim, put Escape on the home row
   [JK_ESC]    = COMBO(jk_combo, KC_ESC),
+  // leader key
+  [HJ_LEADER] = COMBO(hj_combo, QK_LEAD)
 };
 
-// For _QWERTY layer
-#define OSM_LCTL OSM(MOD_LCTL)
-#define OSM_AGR  OSM(MOD_RALT)
-#define OSL_FUN  OSL(_FUNC)
-#define GUI_ENT  GUI_T(KC_ENT)
-#define SYM_LDR  LT(_SYM, KC_NO)
-#define NAV_BSP  LT(_NAV, KC_BSPC)
-#define OSM_SFT  OSM(MOD_LSFT)
-
-#define GUI_BSP  GUI_T(KC_BSPC)
-#define NAV_ENT  LT(_NAV, KC_ENT)
-
-// For _NAV layer
-#define CTL_ESC  LCTL_T(KC_ESC)
-#define OSM_ALT  OSM(MOD_LALT)
-#define K_CPY    C(KC_C)
-#define K_PST    C(S(KC_V))
-#define K_CUT    C(KC_X)
-
-#define LA_MOD MO(_MOD)
-#define LA_SYM MO(_SYM)
 // LA_MOD
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,ALT_TAB ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      CTL_ESC,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,KC_QUOT ,
+      OS_CTRL,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,KC_QUOT ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       OS_SHFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                           OS_GUI, KC_BSPC, LA_SYM,   NAV_ENT ,KC_SPC  ,LA_MOD
+                                           OS_GUI, KC_BSPC, SYM_ESC,   NAV_ENT ,KC_SPC  ,LA_MOD
                                          // OSM_LCTL, GUI_ENT, SYM_TAB,   NAV_BSP ,KC_SPC  ,OSM_SFT
                                       //`--------------------------'  `--------------------------'
   ),
@@ -107,9 +79,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, KC_1,    KC_2,   KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0    ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, XXXXXXX, KC_TILD,KC_GRV, KC_LBRC, KC_LCBR,                       KC_RCBR, KC_RBRC ,QK_LEAD ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+      _______, NUMWORD, KC_TILD,KC_GRV, KC_LBRC, KC_LCBR,                       KC_RCBR, KC_RBRC ,_______ ,_______ ,_______ ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_TRNS,  KC_TRNS, SYM   ,    KC_TRNS, KC_UNDS, KC_COLON
+                                          KC_TRNS,  KC_TRNS, SYM   ,    KC_TRNS, KC_SPC, KC_COLON
                                       //`--------------------------'  `--------------------------'
     ),
 
@@ -126,13 +98,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //`--------------------------'  `--------------------------'
   ),
 
+  [_NUM] = LAYOUT(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+      _______, KC_EXLM, KC_AT,  KC_HASH, KC_DLR,  KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN ,XXXXXXX ,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      _______, KC_1,    KC_2,   KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0    ,XXXXXXX ,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      _______, XXXXXXX, KC_TILD,KC_GRV, KC_LBRC, KC_LCBR,                       KC_RCBR, KC_RBRC ,_______ ,_______ ,_______ ,XXXXXXX ,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          KC_TRNS,  KC_TRNS, XXXXXXX,  KC_TRNS, KC_SPC, KC_COLON
+                                      //`--------------------------'  `--------------------------'
+
+    ),
   [_FUNC] = LAYOUT(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       XXXXXXX, KC_F1  , KC_F2  , KC_F3  , KC_F4  ,  KC_F5 ,                     KC_F6   , KC_F7  , KC_F8  , KC_F9  , KC_F10 ,QK_LOCK ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, OS_GUI , OS_ALT , OS_SHFT, OS_CTRL,  KC_F11,                     KC_MS_L , KC_MS_D, KC_MS_U, KC_MS_R,XXXXXXX ,TO(_QWERTY),
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, KC_LCAP, K_CUT  , K_CPY  , K_PST  ,  KC_F12,                     KC_WH_L , KC_WH_D, KC_WH_U, KC_WH_R,QK_BOOT ,_______ ,
+      _______, KC_LCAP, K_CUT  , K_CPY  , K_PST  ,  KC_F12,                     KC_WH_L , KC_WH_U, KC_WH_D, KC_WH_R,QK_BOOT ,_______ ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                             ARI  , RANI   , XXXXXXX,    KC_BTN1, KC_BTN3, KC_BTN2
                                       //`--------------------------'  `--------------------------'
@@ -192,8 +176,10 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
     case OS_CTRL:
     case OS_ALT:
     case OS_GUI:
+uprintf("is_oneshot_ignored_key: 0x%04X, return true\n", keycode);
         return true;
     default:
+uprintf("is_oneshot_ignored_key: 0x%04X, return false\n", keycode);
         return false;
     }
 }
@@ -229,8 +215,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         &os_gui_state, KC_LGUI, OS_GUI,
         keycode, record
     );
+if (!process_caps_word(keycode, record)) { return false; }
+    if (!process_num_word(keycode, record)) { return false; }
 
-    if (!process_caps_word(keycode, record)) { return false; }
     // Store the current modifier state in the variable for later reference
     // static bool delkey_registered;
     uint8_t mod_state = get_mods();
@@ -241,18 +228,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #endif
     switch (keycode) {
 
+        case NUMWORD:
+            process_num_word_activation(record);
+            return false;
+
         case ALT_TAB:
-              if (record->event.pressed) {
-                if (!is_alt_tab_active) {
-                  is_alt_tab_active = true;
-                  register_code(KC_LALT);
-                }
-                alt_tab_timer = timer_read();
-                register_code(KC_TAB);
-              } else {
-                unregister_code(KC_TAB);
+            if (record->event.pressed) {
+              if (!is_alt_tab_active) {
+                is_alt_tab_active = true;
+                register_code(KC_LALT);
               }
-              break;
+              alt_tab_timer = timer_read();
+              register_code(KC_TAB);
+            } else {
+              unregister_code(KC_TAB);
+            }
+            break;
 
         // case SYM_LDR:
         //     if (record->event.pressed) {

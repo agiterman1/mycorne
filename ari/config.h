@@ -81,7 +81,7 @@
 
 // Set the COMBO_TERM so low that I won't type the keys one after each other during normal typing.
 // They would have be held together intentionally to trigger this.
-#define COMBO_TERM 40
+#define COMBO_TERM 60
 
 // These mostly affect my one-shot Shift key, providing a CapsLock alternative.
 // I want a relatively low timeout, so if I accidentally type "Shift", I can pause just briefly and move on.
@@ -152,4 +152,9 @@
 
 
 #define CAPS_WORD_TOGGLE_KEY
+
+// #define AUTO_SHIFT_TIMEOUT 250
+// #define NO_AUTO_SHIFT_SPECIAL
+// #define NO_AUTO_SHIFT_NUMERIC
+// #define AUTO_SHIFT_NO_AUTO_REPEAT
 

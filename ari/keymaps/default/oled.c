@@ -143,6 +143,10 @@ bool oled_task_user(void) {
             oled_write_ln(PSTR("SYM"), false);
             light_led( COLOR_SYM );
             break;
+        case _NUM:
+            oled_write_ln(PSTR("NUM"), false);
+            light_led( COLOR_NUM );
+            break;
         default:
             // Or use the write_ln shortcut over adding '\n' to the end of your string
             oled_write_ln(PSTR("FUNC"), false);

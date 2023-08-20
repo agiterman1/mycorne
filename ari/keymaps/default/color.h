@@ -6,6 +6,7 @@
 #define COLOR_MOD    RGB_YELLOW
 #define COLOR_NAV    RGB_GREEN
 #define COLOR_SYM    RGB_WHITE
+#define COLOR_NUM    RGB_TEAL
 #define COLOR_FUNC   RGB_RED
 #define COLOR_LEADER RGB_BLUE
 #define COLOR_CONFIRM     RGB_GREEN
