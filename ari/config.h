@@ -64,7 +64,7 @@
 
 
 // Customized by markstos
-#define TAPPING_TERM 175
+#define TAPPING_TERM 200
 #define TAPPING_TERM_PER_KEY
 // used for Tapping Term on thumb keys
 #define TAPPING_TERM_THUMB 185
