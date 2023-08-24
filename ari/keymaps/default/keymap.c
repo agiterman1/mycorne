@@ -19,11 +19,13 @@ enum combos {
   DF_DASH,
   JK_ESC,
   HJ_LEADER,
+  MCOMMA_NUM_WORD,
 };
 
 const uint16_t PROGMEM df_combo[] = {KC_D, KC_F, COMBO_END};
 const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM hj_combo[] = {KC_H, KC_J, COMBO_END};
+const uint16_t PROGMEM mcomma_combo[] = {KC_M, KC_COMM, COMBO_END};
 
 combo_t key_combos[] = {
   // Add commonly used dash to home row
@@ -31,8 +33,21 @@ combo_t key_combos[] = {
   // For Vim, put Escape on the home row
   [JK_ESC]    = COMBO(jk_combo, KC_ESC),
   // leader key
-  [HJ_LEADER] = COMBO(hj_combo, QK_LEAD)
+  [HJ_LEADER] = COMBO(hj_combo, QK_LEAD),
+  // num_word
+  [MCOMMA_NUM_WORD] = COMBO(mcomma_combo, NUMWORD),
 };
+
+// enum {
+//   TD_Q_TAB = 0
+// };
+
+// tap_dance_action_t tap_dance_actions[] = {
+//   [TD_Q_TAB] = ACTION_TAP_DANCE_DOUBLE(KC_Q, KC_TAB)
+// };
+
+// #define TD_Q TD(TD_Q_TAB)
+
 
 // LA_MOD
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -44,7 +59,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       OS_SHFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                           OS_GUI, KC_BSPC, SYM_ESC,   NAV_ENT ,KC_SPC  ,LA_MOD
+                                           OS_GUI, KC_BSPC, LA_SYM,   NAV_ENT ,KC_SPC  ,LA_MOD
                                          // OSM_LCTL, GUI_ENT, SYM_TAB,   NAV_BSP ,KC_SPC  ,OSM_SFT
                                       //`--------------------------'  `--------------------------'
   ),
@@ -104,7 +119,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, KC_1,    KC_2,   KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0    ,KC_QUOT ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, XXXXXXX, KC_TILD,KC_GRV, KC_LBRC, KC_LCBR,                       KC_RCBR, KC_RBRC ,_______ ,_______ ,_______ ,XXXXXXX ,
+      _______, XXXXXXX, XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX , XXXXXXX,_______ ,_______ ,_______ ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           KC_MINS,  KC_TRNS,KC_TRNS,  KC_TRNS , KC_SPC, KC_COLON
                                       //`--------------------------'  `--------------------------'

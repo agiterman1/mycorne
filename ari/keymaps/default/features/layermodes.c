@@ -19,7 +19,7 @@ void process_num_word_activation(const keyrecord_t *record) {
         layer_on(_NUM);
         num_word_timer = timer_read();
     } else {
-        if (timer_elapsed(num_word_timer) < TAPPING_TERM) {
+        if (timer_elapsed(num_word_timer) < TAPPING_TERM * 2) {
             // Tapping enables NUMWORD
             _num_word_enabled = true;
         } else {
