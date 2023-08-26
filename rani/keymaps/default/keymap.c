@@ -18,14 +18,14 @@
 enum combos {
   DF_DASH,
   JK_ESC,
-  // HJ_LEADER,
+  HJ_LEADER,
   CV_LEADER,
   MCOMMA_NUM_WORD,
 };
 
 const uint16_t PROGMEM df_combo[] = {KC_D, KC_F, COMBO_END};
 const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
-// const uint16_t PROGMEM hj_combo[] = {KC_H, KC_J, COMBO_END};
+const uint16_t PROGMEM hj_combo[] = {KC_H, KC_J, COMBO_END};
 const uint16_t PROGMEM cv_combo[] = {KC_C, KC_V, COMBO_END};
 const uint16_t PROGMEM mcomma_combo[] = {KC_M, KC_COMM, COMBO_END};
 
@@ -35,7 +35,7 @@ combo_t key_combos[] = {
   // For Vim, put Escape on the home row
   [JK_ESC]    = COMBO(jk_combo, KC_ESC),
   // leader key
-  // [HJ_LEADER] = COMBO(hj_combo, QK_LEAD),
+  [HJ_LEADER] = COMBO(hj_combo, QK_LEAD),
   [CV_LEADER] = COMBO(cv_combo, QK_LEAD),
   // num_word
   [MCOMMA_NUM_WORD] = COMBO(mcomma_combo, NUMWORD),
