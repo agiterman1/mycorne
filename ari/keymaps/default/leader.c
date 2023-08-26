@@ -19,6 +19,10 @@ void tmux_prefix(void) {
 void leader_end_user(void) {
     is_in_leader = false;
 
+    // switch languages
+    if (leader_sequence_one_key(KC_SPACE))
+        SEND_STRING(SS_LGUI(" "));  // tap_code16(LCTL(KC_C));
+
     // copy
     if (leader_sequence_one_key(KC_C))
         SEND_STRING(SS_LCTL("c"));  // tap_code16(LCTL(KC_C));
