@@ -30,6 +30,7 @@ void process_num_word_activation(const keyrecord_t *record) {
 }
 
 bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
+// uprintf("process_num_word, start: 0x%04X\n", keycode);
     if (!_num_word_enabled) return true;
 
     switch (keycode) {
