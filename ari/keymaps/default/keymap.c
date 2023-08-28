@@ -232,6 +232,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         &os_gui_state, KC_LGUI, OS_GUI,
         keycode, record
     );
+
 // if (!process_caps_word(keycode, record)) { return false; }
     if (!process_num_word(keycode, record)) { return false; }
 

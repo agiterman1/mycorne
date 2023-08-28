@@ -28,6 +28,11 @@ void update_oneshot(
             if (*state == os_up_unqueued) {
                 register_code(mod);
             }
+            else if (mod== KC_LGUI) {
+// println("update_oneshot, double!");
+                *state = os_down_used;
+                return;
+            }
             *state = os_down_unused;
         } else {
             // Trigger keyup
