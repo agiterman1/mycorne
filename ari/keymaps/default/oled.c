@@ -91,16 +91,52 @@ void draw_mods(void) {
     }
 }
 
+bool is_osm_shft=false;
+bool is_osm_shft_lock=false;
+void oneshot_mods_changed_user(uint8_t mods) {
+    // println("oneshot_mods_changed_user, start");
+
+    is_osm_shft = false;
+    if (mods & MOD_MASK_SHIFT) {
+        println("Oneshot mods SHIFT");
+        is_osm_shft = true;
+    }
+    if (mods & MOD_MASK_CTRL) {
+        println("Oneshot mods CTRL");
+    }
+    if (mods & MOD_MASK_ALT) {
+        println("Oneshot mods ALT");
+    }
+    if (mods & MOD_MASK_GUI) {
+        println("Oneshot mods GUI");
+    }
+    if (!mods) {
+        println("Oneshot mods off");
+    }
+}
+
+void oneshot_locked_mods_changed_user(uint8_t mods) {
+    is_osm_shft_lock = false;
+    if (mods & MOD_MASK_SHIFT) {
+        println("Oneshot SHIFT locked");
+        is_osm_shft_lock = true;
+    }
+}
+
 bool oled_task_user(void) {
+
     if (!is_keyboard_master()) {
         return false;
     }
 
+    // println("oled_task_user, start");
 
     // println("OLED_TASK_USER");
 
     uint8_t mod_state = get_mods();
-    (mod_state & MOD_MASK_SHIFT) ? mod_add(LETTER_S) : mod_remove(LETTER_S);
+
+// uprintf("oled_task_user, mods: 0x%04X\n", mod_state);
+    (( mod_state & MOD_MASK_SHIFT ) || is_osm_shft || is_osm_shft_lock) ? mod_add(LETTER_S) : mod_remove(LETTER_S);
     (mod_state & MOD_MASK_ALT)   ? mod_add(LETTER_A) : mod_remove(LETTER_A);
     (mod_state & MOD_MASK_CTRL)  ? mod_add(LETTER_C) : mod_remove(LETTER_C);
     (mod_state & MOD_MASK_GUI)   ? mod_add(LETTER_G) : mod_remove(LETTER_G);
@@ -201,19 +237,21 @@ bool oled_task_user(void) {
 // add c to buffer (only if not there)
 void mod_add(char c) {
     // printf("mod_add, modIndex: %d, c: %d\n", modIndex, c);
+    // println("mod_add, start");
     if (modIndex == -1) modIndex = 0;
 
     if ( modIndex + 1 == MODLENGTH ) return;
 
     for (uint8_t i = 0; i < modIndex; i++) {
-        if (arr[i].mod.c == c) return;
+        // if (arr[i].mod.c == c) return;
+        if (arr[i].mod.c == c) mod_remove(c);
     }
 
     uint8_t locked_mods = get_oneshot_locked_mods();
-    // printf("mod_add, Add: %d, mods: %x\n", c, locked_mods);
+ printf("mod_add, Add: %d, mods: %x\n", c, locked_mods);
     arr[modIndex].mod.c = c;
     if ( c == LETTER_S )
-        arr[modIndex++].mod.inverse = MOD_MASK_SHIFT & locked_mods;
+        arr[modIndex++].mod.inverse = MOD_MASK_SHIFT & locked_mods || is_osm_shft_lock;
     if ( c == LETTER_C )
         arr[modIndex++].mod.inverse = MOD_MASK_CTRL & locked_mods;
     if ( c == LETTER_A )

@@ -64,5 +64,30 @@ void leader_end_user(void) {
         SEND_STRING(";");
     }
 
+    //
+    // TMUX - goto first tab
+    if (leader_sequence_two_keys(KC_T, KC_A)) {
+        tmux_prefix();
+        SEND_STRING("1");
+    }
+    //
+    // TMUX - goto second tab
+    if (leader_sequence_two_keys(KC_T, KC_S)) {
+        tmux_prefix();
+        SEND_STRING("2");
+    }
+    //
+    // TMUX - goto third tab
+    if (leader_sequence_two_keys(KC_T, KC_D)) {
+        tmux_prefix();
+        SEND_STRING("3");
+    }
+    //
+    // TMUX - goto fourth tab
+    if (leader_sequence_two_keys(KC_T, KC_F)) {
+        tmux_prefix();
+        SEND_STRING("4");
+    }
+
 }
 

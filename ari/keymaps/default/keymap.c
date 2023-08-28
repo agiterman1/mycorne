@@ -10,7 +10,6 @@
 #include "color.h"
 #include "oled.h"
 
-#include "features/caps_word.h"
 #include "features/oneshot.h"
 #include "features/layermodes.h"
 
@@ -60,7 +59,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       OS_CTRL,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,KC_QUOT ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      OS_SHFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
+      OSM_SFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                            OS_GUI, KC_BSPC, LA_SYM,   NAV_ENT ,KC_SPC  ,LA_MOD
                                          // OSM_LCTL, GUI_ENT, SYM_TAB,   NAV_BSP ,KC_SPC  ,OSM_SFT
@@ -122,7 +121,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, KC_1,    KC_2,   KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0    ,KC_QUOT ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, XXXXXXX, XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX , XXXXXXX,_______ ,_______ ,_______ ,XXXXXXX ,
+      _______, KC_LSFT, XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX , XXXXXXX,_______ ,_______ ,_______ ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           KC_MINS,  KC_TRNS,KC_TRNS,  KC_TRNS , KC_SPC, KC_COLON
                                       //`--------------------------'  `--------------------------'
@@ -134,7 +133,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, OS_GUI , OS_ALT , OS_SHFT, OS_CTRL,  KC_F11,                     KC_MS_L , KC_MS_D, KC_MS_U, KC_MS_R,XXXXXXX ,TO(_QWERTY),
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, KC_LCAP, K_CUT  , K_CPY  , K_PST  ,  KC_F12,                     KC_WH_L , KC_WH_U, KC_WH_D, KC_WH_R,QK_BOOT ,_______ ,
+      _______, KC_CAPS, K_CUT  , K_CPY  , K_PST  ,  KC_F12,                     KC_WH_L , KC_WH_U, KC_WH_D, KC_WH_R,QK_BOOT ,_______ ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                             ARI  , RANI   , XXXXXXX,    KC_BTN1, KC_BTN3, KC_BTN2
                                       //`--------------------------'  `--------------------------'
@@ -194,10 +193,10 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
     case OS_CTRL:
     case OS_ALT:
     case OS_GUI:
-uprintf("is_oneshot_ignored_key: 0x%04X, return true\n", keycode);
+// uprintf("is_oneshot_ignored_key: 0x%04X, return true\n", keycode);
         return true;
     default:
-uprintf("is_oneshot_ignored_key: 0x%04X, return false\n", keycode);
+// uprintf("is_oneshot_ignored_key: 0x%04X, return false\n", keycode);
         return false;
     }
 }
@@ -233,8 +232,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         &os_gui_state, KC_LGUI, OS_GUI,
         keycode, record
     );
-if (!process_caps_word(keycode, record)) { return false; }
-    if (!process_num_word(keycode, record)) { return false; }
+// if (!process_caps_word(keycode, record)) { return false; }
+//     if (!process_num_word(keycode, record)) { return false; }
 
     // Store the current modifier state in the variable for later reference
     // static bool delkey_registered;

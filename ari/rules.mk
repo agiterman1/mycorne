@@ -2,12 +2,11 @@ SRC += leader.c \
 	   color.c \
 	   oled.c \
 	   features/oneshot.c \
-	   features/caps_word.c \
 	   features/layermodes.c
 
 
 # Disable QMK core's Caps Word implementation.
-CAPS_WORD_ENABLE = no
+CAPS_WORD_ENABLE = yes
 
 
 # OLED_ENABLE = yes
@@ -41,7 +40,6 @@ COMBO_ENABLE = yes
 LEADER_ENABLE = yes
 
 KEY_LOCK_ENABLE = yes
-
 # KEY_OVERRIDE_ENABLE = yes
 
 # AUTO_SHIFT_ENABLE = yes
