@@ -123,6 +123,12 @@ void oneshot_locked_mods_changed_user(uint8_t mods) {
     }
 }
 
+bool is_caps_word=false;
+void caps_word_set_user(bool active) {
+    is_caps_word=active;
+    // uprintf("caps_word_set_user, active: 0x%04X\n",active);
+}
+
 bool oled_task_user(void) {
 
     if (!is_keyboard_master()) {
@@ -140,6 +146,7 @@ bool oled_task_user(void) {
     (mod_state & MOD_MASK_ALT)   ? mod_add(LETTER_A) : mod_remove(LETTER_A);
     (mod_state & MOD_MASK_CTRL)  ? mod_add(LETTER_C) : mod_remove(LETTER_C);
     (mod_state & MOD_MASK_GUI)   ? mod_add(LETTER_G) : mod_remove(LETTER_G);
+    (is_caps_word)               ? mod_add(LETTER_CAPS) : mod_remove(LETTER_CAPS);
     if (modIndex >= 0 ) draw_mods();
 
     oled_set_cursor(0,0);
@@ -258,6 +265,8 @@ void mod_add(char c) {
         arr[modIndex++].mod.inverse = MOD_MASK_ALT & locked_mods;
     if ( c == LETTER_G )
         arr[modIndex++].mod.inverse = MOD_MASK_GUI & locked_mods;
+    if ( c == LETTER_CAPS )
+        modIndex++;
     // printf("mod_add, modIndex: %d, added: %d,%d\n", modIndex-1, arr[modIndex-1].mod.c, arr[modIndex-1].mod.inverse);
 
 }

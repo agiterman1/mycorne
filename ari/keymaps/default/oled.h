@@ -12,3 +12,4 @@ void draw_mods(void);
 #define LETTER_I_NAME (147-100)
 #define LETTER_A_NAME (149-100)
 
+#define LETTER_CAPS (155-100)
