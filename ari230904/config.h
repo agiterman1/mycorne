@@ -7,12 +7,13 @@
 
 // Split Keyboard Stuff
 // #define EE_HANDS                 // Sets the keyboard’s handedness using EEPROM
-#define MASTER_LEFT
+// #define MASTER_LEFT
+#define SPLIT_HAND_PIN GP13
+#define	SPLIT_HAND_PIN_LOW_IS_LEFT
 
 #define SERIAL_USART_FULL_DUPLEX // Use full duplex communication (TRRS)
 #define SERIAL_USART_TX_PIN GP0  // USART TX pin
 #define SERIAL_USART_RX_PIN GP1  // USART RX pin
-// #define SELECT_SOFT_SERIAL_SPEED 5
 
 #define HAL_USE_I2C TRUE
 #define I2C_DRIVER I2CD1
@@ -87,7 +88,7 @@
 
 // These mostly affect my one-shot Shift key, providing a CapsLock alternative.
 // I want a relatively low timeout, so if I accidentally type "Shift", I can pause just briefly and move on.
-#define ONESHOT_TAP_TOGGLE 2  /* Tapping this number of times holds the key until tapped once again. */
+#define ONESHOT_TAP_TOGGLE 3  /* Tapping this number of times holds the key until tapped once again. */
 #define ONESHOT_TIMEOUT 5000  /* Time (in ms) before the one shot key is released */
 
 
