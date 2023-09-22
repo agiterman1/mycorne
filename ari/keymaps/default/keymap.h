@@ -48,6 +48,9 @@ enum custom_layers {
 #define K_CPY    C(KC_C)
 #define K_PST    C(S(KC_V))
 #define K_CUT    C(KC_X)
+/* #define K_BACK   A(KC_B) */
+#define K_BACK   C(KC_LEFT)
+#define K_FORW   C(KC_RIGHT)
 
 #define LA_MOD MO(_MOD)
 #define LA_SYM MO(_SYM)

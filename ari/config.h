@@ -4,10 +4,18 @@
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 200U // Timeout window in ms in which the double tap can occur.
 // #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_LED GP27 // Specify a optional status led by GPIO number which blinks when entering the bootloader
 
+/* Top left key on left half */
+#define BOOTMAGIC_LITE_ROW    0
+#define BOOTMAGIC_LITE_COLUMN 0
+/* Top right key on right half */
+#define BOOTMAGIC_LITE_ROW_RIGHT    0
+#define BOOTMAGIC_LITE_COLUMN_RIGHT 0
+
 
 // Split Keyboard Stuff
 // #define EE_HANDS                 // Sets the keyboard’s handedness using EEPROM
 #define MASTER_LEFT
+#define USB_POLLING_INTERVAL_MS 1
 
 #define SERIAL_USART_FULL_DUPLEX // Use full duplex communication (TRRS)
 #define SERIAL_USART_TX_PIN GP0  // USART TX pin
@@ -70,6 +78,7 @@
 // used for Tapping Term on thumb keys
 #define TAPPING_TERM_THUMB 230
 
+#define DEBOUNCE 10
 
 // If you press a dual-role key, press another key, and then release the
 // dual-role key, all within the tapping term, by default the dual-role key
@@ -80,10 +89,12 @@
 // When enabled, typing a mod-tap plus second within term will register as the mod-combo
 // Ref: https://beta.docs.qmk.fm/using-qmk/software-features/tap_hold#permissive-hold
 // #define PERMISSIVE_HOLD
+#define HOLD_ON_OTHER_KEY_PRESS
 
 // Set the COMBO_TERM so low that I won't type the keys one after each other during normal typing.
 // They would have be held together intentionally to trigger this.
 #define COMBO_TERM 65
+#define COMBO_STRICT_TIMER
 
 // These mostly affect my one-shot Shift key, providing a CapsLock alternative.
 // I want a relatively low timeout, so if I accidentally type "Shift", I can pause just briefly and move on.

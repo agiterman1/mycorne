@@ -15,29 +15,29 @@
 
 
 enum combos {
-  DF_DASH,
+  cmb_DASH,
   JK_ESC,
   // HJ_LEADER,
-  CV_LEADER,
-  MCOMMA_NUM_WORD,
+  NM_LEADER,
+  // MCOMMA_NUM_WORD,
 };
 
-const uint16_t PROGMEM df_combo[] = {KC_D, KC_F, COMBO_END};
+const uint16_t PROGMEM dash_combo[] = {KC_D, KC_F, COMBO_END};
 const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
 // const uint16_t PROGMEM hj_combo[] = {KC_H, KC_J, COMBO_END};
-const uint16_t PROGMEM cv_combo[] = {KC_C, KC_V, COMBO_END};
-const uint16_t PROGMEM mcomma_combo[] = {KC_M, KC_COMM, COMBO_END};
+const uint16_t PROGMEM nm_combo[] = {KC_N, KC_M, COMBO_END};
+// const uint16_t PROGMEM mcomma_combo[] = {KC_M, KC_COMM, COMBO_END};
 
 combo_t key_combos[] = {
   // Add commonly used dash to home row
-  [DF_DASH]    = COMBO(df_combo, KC_MINS),
+  [cmb_DASH]    = COMBO(dash_combo, KC_MINS),
   // For Vim, put Escape on the home row
   [JK_ESC]    = COMBO(jk_combo, KC_ESC),
   // leader key
   // [HJ_LEADER] = COMBO(hj_combo, QK_LEAD),
-  [CV_LEADER] = COMBO(cv_combo, QK_LEAD),
+  [NM_LEADER] = COMBO(nm_combo, QK_LEAD),
   // num_word
-  [MCOMMA_NUM_WORD] = COMBO(mcomma_combo, NUMWORD),
+  // [MCOMMA_NUM_WORD] = COMBO(mcomma_combo, NUMWORD),
 };
 
 // enum {
@@ -84,7 +84,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX,  OS_GUI,  OS_ALT, OS_SHFT, OS_CTRL, XXXXXXX,                     XXXXXXX ,OS_CTRL , OS_SHFT, OS_ALT ,OS_GUI  ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, CW_TOGG, XXXXXXX, XXXXXXX,                     XXXXXXX ,KC_APP  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+      XXXXXXX, XXXXXXX, XXXXXXX, CW_TOGG, XXXXXXX, XXXXXXX,                     NUMWORD ,KC_APP  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______,_______ ,_______
 
@@ -105,7 +105,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NAV] = LAYOUT(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      _______, KC_DEL , XXXXXXX, KC_UNDS, KC_PLUS, KC_PGUP,                      XXXXXXX, XXXXXXX, XXXXXXX, KC_BSLS, KC_PIPE,XXXXXXX ,
+      _______, KC_DEL , XXXXXXX, KC_UNDS, KC_PLUS, KC_PGUP,                      QK_REP , K_BACK , K_FORW , KC_BSLS, KC_PIPE,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, KC_HOME, KC_END , KC_MINS, KC_EQL , KC_PGDN,                      KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT, XXXXXXX,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
