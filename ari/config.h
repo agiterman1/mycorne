@@ -13,8 +13,9 @@
 
 
 // Split Keyboard Stuff
-// #define EE_HANDS                 // Sets the keyboard’s handedness using EEPROM
 #define MASTER_LEFT
+// #define SPLIT_HAND_PIN GP8
+
 #define USB_POLLING_INTERVAL_MS 1
 
 #define SERIAL_USART_FULL_DUPLEX // Use full duplex communication (TRRS)

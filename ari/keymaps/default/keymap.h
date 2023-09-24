@@ -23,10 +23,10 @@ enum custom_keycodes {
 enum custom_layers {
   _QWERTY,
   _RANI,
-  _MOD,
   _SYM,
   _NAV,
   _NUM,
+  _MOD,
   _FUNC,
 };
 
@@ -41,6 +41,8 @@ enum custom_layers {
 
 #define GUI_BSP  GUI_T(KC_BSPC)
 #define NAV_ENT  LT(_NAV, KC_ENT)
+#define MOD_SPC  LT(_MOD, KC_SPC)
+#define SHF_TAB  MT(OSM_SFT, KC_TAB)
 
 // For _NAV layer
 #define CTL_ESC  LCTL_T(KC_ESC)
