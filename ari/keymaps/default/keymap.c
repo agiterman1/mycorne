@@ -66,7 +66,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       OSM_SFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          SHF_TAB, KC_BSPC,  LA_SYM,    NAV_ENT, MOD_SPC,OS_GUI
+                                          SHF_TAB, KC_BSPC,  LA_SYM,    NAV_ENT, MOD_SPC,XXXXXXX
+                                          /* SHF_TAB, KC_BSPC,  LA_SYM,    NAV_ENT, MOD_SPC,OS_GUI */
                                            //OS_GUI, KC_BSPC, LA_SYM,   NAV_ENT ,KC_SPC  ,LA_MOD
                                          // OSM_LCTL, GUI_ENT, SYM_TAB,   NAV_BSP ,KC_SPC  ,OSM_SFT
                                       //`--------------------------'  `--------------------------'
@@ -178,6 +179,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 bool is_oneshot_cancel_key(uint16_t keycode) {
     switch (keycode) {
     case LA_MOD:
+    /* case NAV_ENT: */
     // case LA_NAV:
         return true;
     default:
@@ -194,7 +196,6 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
     case CTL_ESC:
     case OSM_SFT:
     case LA_SYM:
-    case NAV_ENT:
     case OSL_FUN:
     // case KC_SPC:
     case KC_LGUI:
