@@ -77,7 +77,7 @@
 #define TAPPING_TERM 200
 #define TAPPING_TERM_PER_KEY
 // used for Tapping Term on thumb keys
-#define TAPPING_TERM_THUMB 230
+#define TAPPING_TERM_THUMB 260
 
 #define DEBOUNCE 10
 
@@ -89,8 +89,8 @@
 
 // When enabled, typing a mod-tap plus second within term will register as the mod-combo
 // Ref: https://beta.docs.qmk.fm/using-qmk/software-features/tap_hold#permissive-hold
-// #define PERMISSIVE_HOLD
-#define HOLD_ON_OTHER_KEY_PRESS
+#define PERMISSIVE_HOLD
+//#define HOLD_ON_OTHER_KEY_PRESS
 
 // Set the COMBO_TERM so low that I won't type the keys one after each other during normal typing.
 // They would have be held together intentionally to trigger this.

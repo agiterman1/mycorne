@@ -47,6 +47,7 @@ enum custom_layers {
 // For _NAV layer
 #define CTL_ESC  LCTL_T(KC_ESC)
 #define OSM_ALT  OSM(MOD_LALT)
+#define K_TMUX   C(KC_A)
 #define K_CPY    C(KC_C)
 #define K_PST    C(S(KC_V))
 #define K_CUT    C(KC_X)

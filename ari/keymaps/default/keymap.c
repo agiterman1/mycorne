@@ -20,6 +20,7 @@ enum combos {
   // HJ_LEADER,
   NM_LEADER,
   // MCOMMA_NUM_WORD,
+  cmb_TAB
 };
 
 const uint16_t PROGMEM dash_combo[] = {KC_D, KC_F, COMBO_END};
@@ -27,6 +28,7 @@ const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
 // const uint16_t PROGMEM hj_combo[] = {KC_H, KC_J, COMBO_END};
 const uint16_t PROGMEM nm_combo[] = {KC_N, KC_M, COMBO_END};
 // const uint16_t PROGMEM mcomma_combo[] = {KC_M, KC_COMM, COMBO_END};
+const uint16_t PROGMEM tab_combo[] = {KC_Q, KC_W, COMBO_END};
 
 combo_t key_combos[] = {
   // Add commonly used dash to home row
@@ -38,6 +40,7 @@ combo_t key_combos[] = {
   [NM_LEADER] = COMBO(nm_combo, QK_LEAD),
   // num_word
   // [MCOMMA_NUM_WORD] = COMBO(mcomma_combo, NUMWORD),
+  [cmb_TAB] = COMBO(tab_combo, KC_TAB),
 };
 
 // enum {
@@ -55,9 +58,11 @@ combo_t key_combos[] = {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,ALT_TAB ,
+       /* KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,ALT_TAB , */
+      XXXXXXX,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,ALT_TAB ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      OS_CTRL,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,KC_QUOT ,
+      /* OS_CTRL,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,KC_QUOT , */
+      XXXXXXX,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,KC_QUOT ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       OSM_SFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -83,9 +88,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       XXXXXXX, KC_1,    KC_2,   KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX,  OS_GUI,  OS_ALT, OS_SHFT, OS_CTRL, XXXXXXX,                     XXXXXXX ,OS_CTRL , OS_SHFT, OS_ALT ,OS_GUI  ,XXXXXXX ,
+      XXXXXXX,  OS_GUI,  OS_ALT, OS_SHFT, OS_CTRL, XXXXXXX,                     NUMWORD ,OS_CTRL , OS_SHFT, OS_ALT ,OS_GUI  ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, CW_TOGG, XXXXXXX, XXXXXXX,                     NUMWORD ,KC_APP  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+      XXXXXXX, XXXXXXX, XXXXXXX, CW_TOGG, XXXXXXX, XXXXXXX,                     XXXXXXX ,KC_APP  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______,_______ ,_______
 
@@ -108,7 +113,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       _______, KC_DEL , XXXXXXX, KC_UNDS, KC_PLUS, KC_PGUP,                      QK_REP , K_BACK , K_FORW , KC_BSLS, KC_PIPE,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, KC_HOME, KC_END , KC_MINS, KC_EQL , KC_PGDN,                      KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT, XXXXXXX,XXXXXXX ,
+      _______, KC_HOME, KC_END , KC_MINS, KC_EQL , KC_PGDN,                      KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT,  K_TMUX,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, KC_LT  , KC_GT  , K_CPY  , K_PST  , KC_SCLN,                      KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT,KC_MPLY ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -156,9 +161,12 @@ void keyboard_post_init_user() {
     light_led(COLOR_ON);
 }
 
+/* SHF_TAB, KC_BSPC,  LA_SYM,    NAV_ENT, MOD_SPC,OS_GUI */
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
       case NAV_ENT:
+      case SHF_TAB:
+      case MOD_SPC:
             return TAPPING_TERM_THUMB;
       // case LT(_SYM, KC_TAB):
       //       return TAPPING_TERM_THUMB;
@@ -195,6 +203,7 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
     case OS_ALT:
     case OS_GUI:
 // uprintf("is_oneshot_ignored_key: 0x%04X, return true\n", keycode);
+    case MOD_SPC:
         return true;
     default:
 // uprintf("is_oneshot_ignored_key: 0x%04X, return false\n", keycode);
