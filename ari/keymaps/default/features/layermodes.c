@@ -57,7 +57,6 @@ bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
         case KC_NO:
         case NAV:
         case SYM:
-        case SYM_ESC:
         case NAV_ENT:
         // case NAV_ENT:
             // Don't disable for above keycodes

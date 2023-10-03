@@ -54,6 +54,8 @@ enum custom_layers {
 /* #define K_BACK   A(KC_B) */
 #define K_BACK   C(KC_LEFT)
 #define K_FORW   C(KC_RIGHT)
+#define K_LANG   G(KC_SPC)
+
 
 #define LA_MOD MO(_MOD)
 #define LA_SYM MO(_SYM)
