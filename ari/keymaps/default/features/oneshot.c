@@ -15,6 +15,8 @@
  */
 #include "oneshot.h"
 
+/* uint16_t shift_count = 0;     // avoid double capital */
+//
 void update_oneshot(
     oneshot_state *state,
     uint16_t mod,
@@ -24,6 +26,7 @@ void update_oneshot(
 ) {
     if (keycode == trigger) {
         if (record->event.pressed) {
+            /* shift_count = 0; */
             // Trigger keydown
             if (*state == os_up_unqueued) {
                 register_code(mod);
@@ -33,6 +36,7 @@ void update_oneshot(
                 *state = os_down_used;
                 return;
             }
+/* println("update_oneshot, pressed"); */
             *state = os_down_unused;
         } else {
             // Trigger keyup
@@ -51,18 +55,30 @@ void update_oneshot(
             }
         }
     } else {
+/* println("update_oneshot, else start"); */
         if (record->event.pressed) {
+/* println("update_oneshot, else pressed"); */
             if (is_oneshot_cancel_key(keycode) && *state != os_up_unqueued) {
                 // Cancel oneshot on designated cancel keydown.
                 *state = os_up_unqueued;
                 unregister_code(mod);
             }
+/*             else if ( mod == KC_LSFT ) { */
+/* printf("update_oneshot, else in shift, state=%u, shift_count=%u\n", *state,shift_count); */
+/*                 if (++shift_count==2 && *state == 1 ) { */
+/* println("update_oneshot, else in shift DONE"); */
+/**/
+/*                     unregister_code(mod); */
+/*                     shift_count = 0; */
+/*                 } */
+/*             } */
         } else {
             if (!is_oneshot_ignored_key(keycode)) {
                 // On non-ignored keyup, consider the oneshot used.
                 switch (*state) {
                 case os_down_unused:
                     *state = os_down_used;
+
                     break;
                 case os_up_queued:
                     *state = os_up_unqueued;
