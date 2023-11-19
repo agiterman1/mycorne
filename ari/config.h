@@ -61,6 +61,9 @@
 //#define PS2_CLOCK_PIN GP28
 //#define PS2_DATA_PIN  GP29
 //#define PS2_RST_PIN   GP26
+#define PS2_CLOCK_PIN GP9
+#define PS2_DATA_PIN  GP10
+#define PS2_RST_PIN   GP11
 
 
 /* To debug the mouse reports */

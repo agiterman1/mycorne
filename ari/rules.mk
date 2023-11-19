@@ -27,9 +27,9 @@ SERIAL_DRIVER = vendor
 
 
 ### TrackPoint
-#PS2_MOUSE_ENABLE = yes
-#PS2_ENABLE = yes
-#PS2_DRIVER = interrupt
+PS2_MOUSE_ENABLE = yes
+PS2_ENABLE = yes
+PS2_DRIVER = interrupt
 
 
 
