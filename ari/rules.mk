@@ -27,14 +27,15 @@ SERIAL_DRIVER = vendor
 
 
 ### TrackPoint
+# error on compile, add to ~/qmk_firmware/platforms/chibios/drivers/ps2/ps2_io.c
+### #define PAL_MODE_OUTPUT_OPENDRAIN       7U
 PS2_MOUSE_ENABLE = yes
 PS2_ENABLE = yes
-PS2_DRIVER = interrupt
-
+PS2_DRIVER = vendor
+POINTING_DEVICE_DRIVER = ps2
 
 
 COMBO_ENABLE = yes
-
 
 LEADER_ENABLE = yes
 

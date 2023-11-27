@@ -2,6 +2,14 @@
 	"folders": [
 		{
 			"path": "../.."
+		},
+		{
+			"name": "trackpoint",
+			"path": "../../../Documents/PlatformIO/Projects/trackpoint"
+		},
+		{
+			"name": "blink",
+			"path": "../../../Documents/PlatformIO/Projects/blink"
 		}
 	],
 	"settings": {

@@ -19,7 +19,8 @@ enum combos {
   JK_ESC,
   NM_LEADER,
   cmb_TAB,
-  cmb_UNDS
+  cmb_UNDS,
+    cmb_LL
 };
 
 const uint16_t PROGMEM dash_combo[] = {KC_D, KC_F, COMBO_END};
@@ -27,6 +28,7 @@ const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM nm_combo[] = {KC_N, KC_M, COMBO_END};
 const uint16_t PROGMEM tab_combo[] = {KC_Q, KC_W, COMBO_END};
 const uint16_t PROGMEM unds_combo[] = {KC_E, KC_R, COMBO_END};
+const uint16_t PROGMEM ll_combo[] = {KC_M, KC_COMM, COMBO_END};
 
 combo_t key_combos[] = {
   // Add commonly used dash to home row
@@ -34,12 +36,12 @@ combo_t key_combos[] = {
   // For Vim, put Escape on the home row
   [JK_ESC]    = COMBO(jk_combo, KC_ESC),
   // leader key
-  // [HJ_LEADER] = COMBO(hj_combo, QK_LEAD),
-  [NM_LEADER] = COMBO(nm_combo, QK_LEAD),
+  // [NM_LEADER] = COMBO(nm_combo, QK_LEAD),
   // num_word
   // [MCOMMA_NUM_WORD] = COMBO(mcomma_combo, NUMWORD),
   [cmb_TAB] = COMBO(tab_combo, KC_TAB),
   [cmb_UNDS] = COMBO(unds_combo, KC_UNDS),
+  [cmb_LL] = COMBO(ll_combo, SEL_LINE),
 };
 
 
@@ -58,14 +60,11 @@ combo_t key_combos[] = {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       /* KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,ALT_TAB , */
-      XXXXXXX,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,ALT_TAB ,
+       OS_ALT,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,ALT_TAB ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      /* OS_CTRL,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,KC_QUOT , */
-      XXXXXXX,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,KC_QUOT ,
+      CTL_ESC,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,KC_QUOT ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      // OSM_SFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
-      XXXXXXX,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
+       OS_GUI,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           SHF_TAB, KC_BSPC,  LA_SYM,    NAV_ENT, MOD_SPC,KC_RCTL
                                           /* SHF_TAB, KC_BSPC,  LA_SYM,    NAV_ENT, MOD_SPC,OS_GUI */
@@ -154,8 +153,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 long last_color;
 bool is_in_leader = false;
 
-// void keyboard_pre_init_user() {
-// }
+void keyboard_pre_init_user() {
+    setPinOutput(PS2_RST_PIN);
+    writePinHigh(PS2_RST_PIN);
+    wait_ms(20);
+    writePinLow(PS2_RST_PIN);
+}
 
 void keyboard_post_init_user() {
     register_led_msg();
@@ -263,6 +266,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case NUMWORD:
             process_num_word_activation(record);
             return false;
+        case SEL_LINE:
+            SEND_STRING(SS_TAP(X_HOME) SS_LSFT(SS_TAP(X_END)));
+            break;
+
 
         case ALT_TAB:
             if (record->event.pressed) {
@@ -356,4 +363,9 @@ void matrix_scan_user(void) { // The very important timer.
 }
 
 
+void ps2_mouse_moved_user(report_mouse_t *mouse_report) {
+#ifdef CONSOLE_ENABLE
+    uprintf("MS: x: %d, y: %d\n", mouse_report->x, mouse_report->y);
+#endif
+}
 

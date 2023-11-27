@@ -15,6 +15,7 @@ enum custom_keycodes {
     OS_ALT,
     OS_GUI,
     NUMWORD,
+    SEL_LINE,
 };
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
@@ -34,6 +35,7 @@ enum custom_layers {
 #define OSM_LCTL OSM(MOD_LCTL)
 #define OSM_SFT  OSM(MOD_LSFT)
 #define OSM_AGR  OSM(MOD_RALT)
+#define OSM_GUI  OSM(MOD_LGUI)
 #define OSL_FUN  OSL(_FUNC)
 #define GUI_ENT  GUI_T(KC_ENT)
 #define SYM_LDR  LT(_SYM, KC_NO)

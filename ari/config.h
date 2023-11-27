@@ -14,6 +14,7 @@
 
 // Split Keyboard Stuff
 #define MASTER_LEFT
+/* #define EE_HANDS */
 // #define SPLIT_HAND_PIN GP8
 
 #define USB_POLLING_INTERVAL_MS 1
@@ -61,14 +62,21 @@
 //#define PS2_CLOCK_PIN GP28
 //#define PS2_DATA_PIN  GP29
 //#define PS2_RST_PIN   GP26
-#define PS2_CLOCK_PIN GP9
+
+// Serial uses PIO0, change PS2 to PIO1.
+#define PS2_MOUSE_INVERT_X
+#define PS2_MOUSE_INVERT_Y
+#define PS2_CLOCK_PIN GP11
 #define PS2_DATA_PIN  GP10
-#define PS2_RST_PIN   GP11
-
-
+#define PS2_RST_PIN   GP9
+#define PS2_PIO_USE_PIO1 // Force the usage of PIO1 peripheral, by default the PS2 implementation uses the PIO0 peripheral
+#define PS2_MOUSE_X_MULTIPLIER 2
+#define PS2_MOUSE_Y_MULTIPLIER 2
+#define PS2_MOUSE_V_MULTIPLIER 2
+#define PS2_MOUSE_ROTATE 90 /* Compensate for West-facing device orientation. */
 /* To debug the mouse reports */
-// #define PS2_MOUSE_DEBUG_HID
-// #define PS2_MOUSE_DEBUG_RAW
+/* #define PS2_MOUSE_DEBUG_HID */
+/* #define PS2_MOUSE_DEBUG_RAW */
 
 
 
