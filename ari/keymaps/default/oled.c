@@ -132,13 +132,14 @@ void caps_word_set_user(bool active) {
 
 bool oled_task_user(void) {
 
-    if (!is_keyboard_master()) {
+    // println("oled_task_user, start");
+
+    // lcd is on slave
+    if (is_keyboard_master()) {
         return false;
     }
 
-    // println("oled_task_user, start");
 
-    // println("OLED_TASK_USER");
 
     uint8_t mod_state = get_mods();
 

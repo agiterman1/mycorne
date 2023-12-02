@@ -60,11 +60,12 @@ combo_t key_combos[] = {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       OS_ALT,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,ALT_TAB ,
+      KC_BTN2,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,ALT_TAB ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      CTL_ESC,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,KC_QUOT ,
+      // CTL_ESC,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,KC_QUOT ,
+      KC_BTN1,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,KC_QUOT ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-       OS_GUI,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
+      KC_BTN3,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           SHF_TAB, KC_BSPC,  LA_SYM,    NAV_ENT, MOD_SPC,KC_RCTL
                                           /* SHF_TAB, KC_BSPC,  LA_SYM,    NAV_ENT, MOD_SPC,OS_GUI */
@@ -154,10 +155,10 @@ long last_color;
 bool is_in_leader = false;
 
 void keyboard_pre_init_user() {
-    setPinOutput(PS2_RST_PIN);
-    writePinHigh(PS2_RST_PIN);
-    wait_ms(20);
-    writePinLow(PS2_RST_PIN);
+    // setPinOutput(PS2_RST_PIN);
+    // writePinHigh(PS2_RST_PIN);
+    // wait_ms(20);
+    // writePinLow(PS2_RST_PIN);
 }
 
 void keyboard_post_init_user() {
@@ -362,6 +363,7 @@ void matrix_scan_user(void) { // The very important timer.
   }
 }
 
+bool should_process_keypress(void) { return true; }
 
 void ps2_mouse_moved_user(report_mouse_t *mouse_report) {
 #ifdef CONSOLE_ENABLE

@@ -13,7 +13,7 @@
 
 
 // Split Keyboard Stuff
-#define MASTER_LEFT
+#define MASTER_RIGHT
 /* #define EE_HANDS */
 // #define SPLIT_HAND_PIN GP8
 
@@ -29,6 +29,7 @@
 #define I2C1_SDA_PIN GP14
 #define I2C1_SCL_PIN GP15
 
+#define SPLIT_TRANSPORT_MIRROR
 #define OLED_DISPLAY_128X32
 #define OLED_DISPLAY_WIDTH 128
 #define OLED_DISPLAY_HEIGHT 32
@@ -68,12 +69,12 @@
 #define PS2_MOUSE_INVERT_Y
 #define PS2_CLOCK_PIN GP11
 #define PS2_DATA_PIN  GP10
-#define PS2_RST_PIN   GP9
+/* #define PS2_RST_PIN   GP9 */
 #define PS2_PIO_USE_PIO1 // Force the usage of PIO1 peripheral, by default the PS2 implementation uses the PIO0 peripheral
 #define PS2_MOUSE_X_MULTIPLIER 2
 #define PS2_MOUSE_Y_MULTIPLIER 2
-#define PS2_MOUSE_V_MULTIPLIER 2
-#define PS2_MOUSE_ROTATE 90 /* Compensate for West-facing device orientation. */
+#define PS2_MOUSE_V_MULTIPLIER 4
+/* #define PS2_MOUSE_ROTATE 90 */ //Compensate for West-facing device orientation.
 /* To debug the mouse reports */
 /* #define PS2_MOUSE_DEBUG_HID */
 /* #define PS2_MOUSE_DEBUG_RAW */
