@@ -10,6 +10,7 @@
 
 #include "oled.h"
 #include "keymap.h"
+#include "color.h"
 
 #define MODLENGTH 10
 
@@ -130,14 +131,15 @@ void caps_word_set_user(bool active) {
     // uprintf("caps_word_set_user, active: 0x%04X\n",active);
 }
 
+// this function will not be called if no oled attached!
 bool oled_task_user(void) {
 
     // println("oled_task_user, start");
 
     // lcd is on slave
-    if (is_keyboard_master()) {
-        return false;
-    }
+    // if (is_keyboard_master()) {
+    //     return false;
+    // }
 
 
 
@@ -158,6 +160,7 @@ bool oled_task_user(void) {
         light_led( COLOR_LEADER );
         return false;
     }
+// uprintf("oled_task_user, layer: 0x%04X\n", get_highest_layer(layer_state));
 
     switch (get_highest_layer(layer_state)) {
         case _QWERTY:
@@ -178,24 +181,24 @@ bool oled_task_user(void) {
             break;
         case _MOD:
             oled_write_ln(PSTR("MOD"), false);
-            light_led( COLOR_MOD );
+            // light_led( COLOR_MOD );
             break;
         case _NAV:
             oled_write_ln(PSTR("NAV"), false);
-            light_led( COLOR_NAV );
+            // light_led( COLOR_NAV );
             break;
         case _SYM:
             oled_write_ln(PSTR("SYM"), false);
-            light_led( COLOR_SYM );
+            // light_led( COLOR_SYM );
             break;
         case _NUM:
             oled_write_ln(PSTR("NUM"), false);
-            light_led( COLOR_NUM );
+            // light_led( COLOR_NUM );
             break;
         default:
             // Or use the write_ln shortcut over adding '\n' to the end of your string
             oled_write_ln(PSTR("FUNC"), false);
-            light_led( COLOR_FUNC );
+            // light_led( COLOR_FUNC );
     }
     // ~MOD_MASK_SHIFT & get_oneshot_locked_mods()
 

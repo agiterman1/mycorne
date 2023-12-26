@@ -58,13 +58,21 @@ void update_oneshot(
 /* println("update_oneshot, else start"); */
         if (record->event.pressed) {
 /* println("update_oneshot, else pressed"); */
+printf("update_oneshot, else in shift, state=%u, keycode=%u\n", *state,keycode);
             if (is_oneshot_cancel_key(keycode) && *state != os_up_unqueued) {
                 // Cancel oneshot on designated cancel keydown.
                 *state = os_up_unqueued;
                 unregister_code(mod);
             }
+//             else if (keycode ==  0x4328) { // enter
+// println("update_oneshot, else in enter DONE");
+//                 unregister_code(mod);
+//                 // oled_task_user();
+//
+//                 // need to clear the lcd. (mod is cleared but not from lcd)
+//             }
 /*             else if ( mod == KC_LSFT ) { */
-/* printf("update_oneshot, else in shift, state=%u, shift_count=%u\n", *state,shift_count); */
+// printf("update_oneshot, else in shift, state=%u, shift_count=%u\n", *state,shift_count);
 /*                 if (++shift_count==2 && *state == 1 ) { */
 /* println("update_oneshot, else in shift DONE"); */
 /**/
@@ -72,22 +80,22 @@ void update_oneshot(
 /*                     shift_count = 0; */
 /*                 } */
 /*             } */
-        } else {
-            if (!is_oneshot_ignored_key(keycode)) {
-                // On non-ignored keyup, consider the oneshot used.
-                switch (*state) {
-                case os_down_unused:
-                    *state = os_down_used;
+            } else {
+                if (!is_oneshot_ignored_key(keycode)) {
+                    // On non-ignored keyup, consider the oneshot used.
+                    switch (*state) {
+                    case os_down_unused:
+                        *state = os_down_used;
 
-                    break;
-                case os_up_queued:
-                    *state = os_up_unqueued;
-                    unregister_code(mod);
-                    break;
-                default:
-                    break;
+                        break;
+                    case os_up_queued:
+                        *state = os_up_unqueued;
+                        unregister_code(mod);
+                        break;
+                    default:
+                        break;
+                    }
                 }
             }
-        }
     }
 }

@@ -29,11 +29,11 @@ void register_led_msg() {
 }
 
 void light_led( int r, int g, int b) {
-  // uprintf("light_led, start: 0x%02X, 0x%02X, 0x%02X\n", r, g, b);
+    // uprintf("light_led, start: 0x%02X, 0x%02X, 0x%02X\n", r, g, b);
     if ( last_color == color(COLOR_ON) && color(r,g,b) == color(COLOR_QWERTY) ) return;   // on boot, leave color on until any layer is pressed
     if ( last_color == color(r,g,b)) return;    // multiple calls. ignore dup
 
-  // print("light_led, 1\n");
+    // print("light_led, 1\n");
   // dprint("DPRINT IS WORKING!, 1\n");
     // rgblight_enable_noeeprom(); // enables Rgb, without saving settings
     // rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT); // sets mode to Fast breathing without saving
@@ -41,6 +41,7 @@ void light_led( int r, int g, int b) {
     last_color = color(r,g,b);
     rgblight_setrgb(r, g, b);
     rgblight_set(); // Utility functions do not call rgblight_set() automatically, so they need to be called explicitly.
+    // rgb_matrix_set_color(0,r,g,b);
 
     if (is_keyboard_master()) {
         master_to_slave_t c = {r, g, b};

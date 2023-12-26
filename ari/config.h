@@ -29,7 +29,6 @@
 #define I2C1_SDA_PIN GP14
 #define I2C1_SCL_PIN GP15
 
-#define SPLIT_TRANSPORT_MIRROR
 #define OLED_DISPLAY_128X32
 #define OLED_DISPLAY_WIDTH 128
 #define OLED_DISPLAY_HEIGHT 32
@@ -73,7 +72,7 @@
 #define PS2_PIO_USE_PIO1 // Force the usage of PIO1 peripheral, by default the PS2 implementation uses the PIO0 peripheral
 #define PS2_MOUSE_X_MULTIPLIER 2
 #define PS2_MOUSE_Y_MULTIPLIER 2
-#define PS2_MOUSE_V_MULTIPLIER 4
+#define PS2_MOUSE_V_MULTIPLIER 5
 /* #define PS2_MOUSE_ROTATE 90 */ //Compensate for West-facing device orientation.
 /* To debug the mouse reports */
 /* #define PS2_MOUSE_DEBUG_HID */
@@ -91,7 +90,7 @@
 // used for Tapping Term on thumb keys
 #define TAPPING_TERM_THUMB 260
 
-#define DEBOUNCE 10
+#define DEBOUNCE 15
 
 // If you press a dual-role key, press another key, and then release the
 // dual-role key, all within the tapping term, by default the dual-role key
@@ -106,7 +105,7 @@
 
 // Set the COMBO_TERM so low that I won't type the keys one after each other during normal typing.
 // They would have be held together intentionally to trigger this.
-#define COMBO_TERM 65
+#define COMBO_TERM 50
 #define COMBO_STRICT_TIMER
 
 // These mostly affect my one-shot Shift key, providing a CapsLock alternative.
@@ -127,7 +126,8 @@
 
 
 
-
+#undef SPLIT_USB_DETECT
+/* #define SPLIT_MODS_ENABLE */
 #define SPLIT_TRANSPORT_MIRROR
 #define SPLIT_LAYER_STATE_ENABLE
 // #define SPLIT_USB_TIMEOUT 5000

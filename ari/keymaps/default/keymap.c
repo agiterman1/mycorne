@@ -39,8 +39,8 @@ combo_t key_combos[] = {
   // [NM_LEADER] = COMBO(nm_combo, QK_LEAD),
   // num_word
   // [MCOMMA_NUM_WORD] = COMBO(mcomma_combo, NUMWORD),
-  [cmb_TAB] = COMBO(tab_combo, KC_TAB),
-  [cmb_UNDS] = COMBO(unds_combo, KC_UNDS),
+  // [cmb_TAB] = COMBO(tab_combo, KC_TAB),
+  // [cmb_UNDS] = COMBO(unds_combo, KC_UNDS),
   [cmb_LL] = COMBO(ll_combo, SEL_LINE),
 };
 
@@ -106,7 +106,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, KC_UNDS, KC_TILD,KC_GRV, KC_LBRC, KC_LCBR,                       KC_RCBR, KC_RBRC ,KC_MINS , KC_EQL ,KC_PLUS ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_TRNS,  KC_TRNS, SYM   ,    KC_TRNS, KC_SPC, KC_COLON
+                                          KC_TRNS,  KC_TRNS, SYM   ,    KC_UNDS, KC_SPC, KC_COLON
                                       //`--------------------------'  `--------------------------'
     ),
 
@@ -115,7 +115,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       _______, KC_DEL , XXXXXXX, KC_UNDS, KC_PLUS, KC_PGUP,                      QK_REP , K_BACK , K_FORW , KC_BSLS, KC_PIPE,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______,  OS_GUI,  OS_ALT, OSM_SFT, OS_CTRL, KC_PGDN,                      KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT,  K_TMUX,XXXXXXX ,
+      _______, OSM_GUI, OSM_ALT, OSM_SFT,OSM_LCTL, KC_PGDN,                      KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT,  K_TMUX,XXXXXXX ,
   //  _______, KC_HOME, KC_END , KC_MINS, KC_EQL , KC_PGDN,                      KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT,  K_TMUX,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, XXXXXXX, XXXXXXX, K_CPY  , K_PST  , KC_SCLN,                      XXXXXXX, KC_HOME, KC_END , KC_VOLD, KC_VOLU,XXXXXXX ,
@@ -140,7 +140,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       XXXXXXX, KC_F1  , KC_F2  , KC_F3  , KC_F4  ,  KC_F5 ,                     KC_F6   , KC_F7  , KC_F8  , KC_F9  , KC_F10 ,QK_LOCK ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, OS_GUI , OS_ALT , OS_SHFT, OS_CTRL,  KC_F11,                     KC_MS_L , KC_MS_D, KC_MS_U, KC_MS_R,XXXXXXX ,TO(_QWERTY),
+      _______, OS_GUI , OS_ALT , OS_SHFT, OS_CTRL,  KC_F11,                     KC_MS_L , KC_MS_D, KC_MS_U, KC_MS_R,QK_RBT  ,TO(_QWERTY),
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, KC_CAPS, K_CUT  , K_CPY  , K_PST  ,  KC_F12,                     KC_WH_L , KC_WH_U, KC_WH_D, KC_WH_R,QK_BOOT ,_______ ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -157,7 +157,7 @@ bool is_in_leader = false;
 void keyboard_pre_init_user() {
     // setPinOutput(PS2_RST_PIN);
     // writePinHigh(PS2_RST_PIN);
-    // wait_ms(20);
+    wait_ms(20);
     // writePinLow(PS2_RST_PIN);
 }
 
@@ -185,7 +185,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 bool is_oneshot_cancel_key(uint16_t keycode) {
     switch (keycode) {
     case LA_MOD:
-    /* case NAV_ENT: */
+    // case NAV_ENT:
     // case LA_NAV:
         return true;
     default:
@@ -204,14 +204,14 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
     case LA_SYM:
     case OSL_FUN:
     // case KC_SPC:
-    case KC_LGUI:
+    // case KC_LGUI:
     case OS_SHFT:
     case OS_CTRL:
     case OS_ALT:
     case OS_GUI:
 // uprintf("is_oneshot_ignored_key: 0x%04X, return true\n", keycode);
     case MOD_SPC:
-    case NAV_ENT:
+    // case NAV_ENT:
         return true;
     default:
 // uprintf("is_oneshot_ignored_key: 0x%04X, return false\n", keycode);
@@ -350,6 +350,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
     }
 
+
     return true;
 
 }
@@ -359,9 +360,35 @@ void matrix_scan_user(void) { // The very important timer.
     if (timer_elapsed(alt_tab_timer) > 1000) {
       unregister_code(KC_LALT);
       is_alt_tab_active = false;
+      // mod_remove(LETTER_A); // try to remove A from lcd
     }
   }
 }
+
+// don't know why led doesn't work on master.
+layer_state_t layer_state_set_user(layer_state_t state) {
+    switch (get_highest_layer(state)) {
+        case _QWERTY:
+            light_led( COLOR_QWERTY );
+            break;
+        case _MOD:
+            light_led( COLOR_MOD );
+            break;
+        case _NAV:
+            light_led( COLOR_NAV );
+            break;
+        case _SYM:
+            light_led( COLOR_SYM );
+            break;
+        case _NUM:
+            light_led( COLOR_NUM );
+            break;
+        default:
+            light_led( COLOR_FUNC );
+    }
+    return state;
+}
+
 
 bool should_process_keypress(void) { return true; }
 
