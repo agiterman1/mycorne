@@ -90,9 +90,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       XXXXXXX, KC_1,    KC_2,   KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX,  OS_GUI,  OS_ALT, OSM_SFT, OS_CTRL,K_LANG,                       NUMWORD ,OS_CTRL , OS_SHFT, OS_ALT ,OS_GUI  ,XXXXXXX ,
+      XXXXXXX,  OS_GUI,  OS_ALT, OSM_SFT, OS_CTRL,K_LANG,                       XXXXXXX ,OS_CTRL , OS_SHFT, OS_ALT ,OS_GUI  ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, CW_TOGG, XXXXXXX, XXXXXXX,                     XXXXXXX ,KC_APP  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+      XXXXXXX, XXXXXXX, XXXXXXX, CW_TOGG, XXXXXXX, XXXXXXX,                     NUMWORD ,KC_APP  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______,_______ ,_______
 
@@ -111,9 +111,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
 
-  [_NAV] = LAYOUT(
+  [_NAV] = LAYOUT(                                                             //QK_REP
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      _______, KC_DEL , XXXXXXX, KC_UNDS, KC_PLUS, KC_PGUP,                      QK_REP , K_BACK , K_FORW , KC_BSLS, KC_PIPE,XXXXXXX ,
+      _______, KC_DEL , XXXXXXX, KC_UNDS, KC_PLUS, KC_PGUP,                      KC_F15 , K_BACK , K_FORW , KC_BSLS, KC_PIPE,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, OSM_GUI, OSM_ALT, OSM_SFT,OSM_LCTL, KC_PGDN,                      KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT,  K_TMUX,XXXXXXX ,
   //  _______, KC_HOME, KC_END , KC_MINS, KC_EQL , KC_PGDN,                      KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT,  K_TMUX,XXXXXXX ,
@@ -211,7 +211,7 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
     case OS_GUI:
 // uprintf("is_oneshot_ignored_key: 0x%04X, return true\n", keycode);
     case MOD_SPC:
-    // case NAV_ENT:
+    case NAV_ENT:
         return true;
     default:
 // uprintf("is_oneshot_ignored_key: 0x%04X, return false\n", keycode);
