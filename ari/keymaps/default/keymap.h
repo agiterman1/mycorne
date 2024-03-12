@@ -62,3 +62,6 @@ enum custom_layers {
 #define LA_MOD MO(_MOD)
 #define LA_SYM MO(_SYM)
 #define SYM_ESC  LT(_SYM, KC_ESC)
+
+#define K_TAB_R    C(KC_TAB)
+#define K_TAB_L    C(S(KC_TAB))

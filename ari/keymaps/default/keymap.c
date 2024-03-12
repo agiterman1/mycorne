@@ -92,7 +92,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX,  OS_GUI,  OS_ALT, OSM_SFT, OS_CTRL,K_LANG,                       XXXXXXX ,OS_CTRL , OS_SHFT, OS_ALT ,OS_GUI  ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, CW_TOGG, XXXXXXX, XXXXXXX,                     NUMWORD ,KC_APP  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+      XXXXXXX, XXXXXXX, XXXXXXX, CW_TOGG, K_TAB_L, K_TAB_R,                     NUMWORD ,KC_APP  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______,_______ ,_______
 
