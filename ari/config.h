@@ -101,8 +101,8 @@
 
 // When enabled, typing a mod-tap plus second within term will register as the mod-combo
 // Ref: https://beta.docs.qmk.fm/using-qmk/software-features/tap_hold#permissive-hold
-#define PERMISSIVE_HOLD
-//#define HOLD_ON_OTHER_KEY_PRESS
+//#define PERMISSIVE_HOLD
+#define HOLD_ON_OTHER_KEY_PRESS
 
 // Set the COMBO_TERM so low that I won't type the keys one after each other during normal typing.
 // They would have be held together intentionally to trigger this.

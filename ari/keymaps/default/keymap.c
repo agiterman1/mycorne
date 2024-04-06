@@ -12,7 +12,7 @@
 
 #include "features/oneshot.h"
 #include "features/layermodes.h"
-
+#include "features/layer_lock.h"
 
 enum combos {
   cmb_DASH,
@@ -113,12 +113,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NAV] = LAYOUT(                                                             //QK_REP
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      _______, KC_DEL , XXXXXXX, KC_UNDS, KC_PLUS, KC_PGUP,                      KC_F15 , K_BACK , K_FORW , KC_BSLS, KC_PIPE,XXXXXXX ,
+      _______, KC_DEL , XXXXXXX, KC_UNDS, KC_PLUS, KC_PGUP,                      LLOCK  , K_BACK , K_FORW , KC_BSLS, KC_PIPE,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, OSM_GUI, OSM_ALT, OSM_SFT,OSM_LCTL, KC_PGDN,                      KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT,  K_TMUX,XXXXXXX ,
   //  _______, KC_HOME, KC_END , KC_MINS, KC_EQL , KC_PGDN,                      KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT,  K_TMUX,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, XXXXXXX, XXXXXXX, K_CPY  , K_PST  , KC_SCLN,                      XXXXXXX, KC_HOME, KC_END , KC_VOLD, KC_VOLU,XXXXXXX ,
+      _______, XXXXXXX, L_CUT  , L_CPY  , K_PST  , KC_SCLN,                      XXXXXXX, KC_HOME, KC_END , KC_VOLD, KC_VOLU,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           KC_TRNS, KC_TRNS, XXXXXXX,    NAV  , KC_TRNS, KC_TRNS
                                       //`--------------------------'  `--------------------------'
@@ -234,6 +234,8 @@ uint16_t alt_tab_timer = 0;     // we will be using them soon.
 // return false; // Skip all further processing of this key
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
+    if (!process_layer_lock(keycode, record, LLOCK)) { return false; }
+
     update_oneshot(
         &os_shft_state, KC_LSFT, OS_SHFT,
         keycode, record
@@ -346,8 +348,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 set_single_persistent_default_layer(_RANI);
                 light_led(COLOR_CONFIRM);
             }
-
             return false;
+
+		case L_CUT:
+			layer_lock_off(_NAV);
+            SEND_STRING(SS_LCTL("x"));
+            return false;
+
+		case L_CPY:
+			layer_lock_off(_NAV);
+            SEND_STRING(SS_LCTL("c"));
+            return false;
+
+		case L_PST:
+			layer_lock_off(_NAV);
+            SEND_STRING(SS_LCTL("v"));
+            return false;
+
     }
 
 
