@@ -379,14 +379,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 // uprintf("auto close on\n");
                 if (!auto_close_timer) {
                     // uprintf("auto close start\n");
-                    // is_auto_close_active = true;
                     auto_close_timer = timer_read();
                 }
                 else {
                     uprintf("auto close timer: %d\n",timer_elapsed(auto_close_timer));
-                    // is_auto_close_active = false;
-                    if (timer_elapsed(auto_close_timer) < 700) {
-                        auto_close_timer=0;
+                    if (timer_elapsed(auto_close_timer) < 300) {
                         uprintf("auto close DOIT!\n");
 
                         switch (keycode) {
@@ -409,9 +406,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                                     SEND_STRING("'" SS_TAP(X_LEFT));
                                 break;
                         }
+                        auto_close_timer=0;
                         return false;
                     }
-                    auto_close_timer=0;
+                    auto_close_timer = timer_read();
                 }
             }
             return true;
