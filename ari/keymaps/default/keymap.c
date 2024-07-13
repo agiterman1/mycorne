@@ -100,13 +100,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_SYM] = LAYOUT(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      _______, KC_EXLM, KC_AT,  KC_HASH, KC_DLR,  KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN ,XXXXXXX ,
+      _______, KC_EXLM, KC_AT,  KC_HASH, KC_DLR,  KC_PERC ,                     KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, KC_1,    KC_2,   KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0    ,XXXXXXX ,
+      _______, KC_1,    KC_2,   KC_3,    KC_4,    KC_5    ,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0    ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, KC_UNDS, KC_TILD,KC_GRV, KC_LBRC, KC_LCBR,                       KC_RCBR, KC_RBRC ,KC_MINS , KC_EQL ,KC_PLUS ,XXXXXXX ,
+      _______, KC_UNDS, KC_TILD,KC_GRV  ,KC_LBRC ,KC_LCBR ,                     KC_RCBR ,KC_RBRC ,KC_MINS ,KC_EQL  ,KC_PLUS ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_TRNS,  KC_TRNS, SYM   ,    KC_UNDS, KC_SPC, KC_COLON
+                                          KC_TRNS,XXXXXXX, SYM    ,    KC_UNDS, KC_SPC ,KC_COLON
                                       //`--------------------------'  `--------------------------'
     ),
 
@@ -120,7 +120,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, XXXXXXX, L_CUT  , L_CPY  , K_PST  , KC_SCLN,                      XXXXXXX, KC_HOME, KC_END , KC_VOLD, KC_VOLU,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_TRNS, KC_TRNS, XXXXXXX,    NAV  , KC_TRNS, KC_TRNS
+                                          KC_TRNS, KC_TRNS, XXXXXXX,      NAV  , KC_TRNS, KC_TRNS
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -132,7 +132,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, KC_LSFT, XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX , XXXXXXX,_______ , _______,_______ ,XXXXXXX ,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_MINS,  KC_TRNS,KC_TRNS,  KC_TRNS , KC_SPC, KC_COLON
+                                          KC_MINS, KC_TRNS, KC_TRNS,    KC_TRNS,  KC_SPC, KC_COLON
                                       //`--------------------------'  `--------------------------'
 
     ),
@@ -230,6 +230,10 @@ uint16_t key_timer; // declare key_timer for use in macro
 bool is_alt_tab_active = false; // ADD this near the beginning of keymap.c
 uint16_t alt_tab_timer = 0;     // we will be using them soon.
 
+
+// auto close timer
+// bool is_auto_close_active = false;
+uint16_t auto_close_timer = 0;     // we will be using them soon.
 
 // return false; // Skip all further processing of this key
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -364,6 +368,53 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 			layer_lock_off(_NAV);
             SEND_STRING(SS_LCTL("v"));
             return false;
+
+        case KC_LBRC:
+        case KC_LCBR:
+        case KC_LPRN:
+        case KC_GRV:
+        case KC_QUOT:
+        // case KC_:
+            if (record->event.pressed) {
+                // uprintf("auto close on\n");
+                if (!auto_close_timer) {
+                    // uprintf("auto close start\n");
+                    // is_auto_close_active = true;
+                    auto_close_timer = timer_read();
+                }
+                else {
+                    uprintf("auto close timer: %d\n",timer_elapsed(auto_close_timer));
+                    // is_auto_close_active = false;
+                    if (timer_elapsed(auto_close_timer) < 700) {
+                        auto_close_timer=0;
+                        uprintf("auto close DOIT!\n");
+
+                        switch (keycode) {
+                            case KC_LBRC:
+                                SEND_STRING("]" SS_TAP(X_LEFT));
+                                break;
+                            case KC_LCBR:
+                                SEND_STRING("}" SS_TAP(X_LEFT));
+                                break;
+                            case KC_LPRN:
+                                SEND_STRING(")" SS_TAP(X_LEFT));
+                                break;
+                            case KC_GRV:
+                                SEND_STRING("`" SS_TAP(X_LEFT));
+                                break;
+                            case KC_QUOT:
+                                if (mod_state & MOD_MASK_SHIFT)
+                                    SEND_STRING("\"" SS_TAP(X_LEFT));
+                                else
+                                    SEND_STRING("'" SS_TAP(X_LEFT));
+                                break;
+                        }
+                        return false;
+                    }
+                    auto_close_timer=0;
+                }
+            }
+            return true;
 
     }
 
